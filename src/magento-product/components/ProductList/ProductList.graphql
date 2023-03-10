@@ -1,0 +1,20 @@
+query ProductList(
+  $pageSize: Int = 24
+  $currentPage: Int = 1
+  $filters: ProductAttributeFilterInput = {}
+  $sort: ProductAttributeSortInput = {}
+  $search: String = ""
+) {
+  products(
+    pageSize: $pageSize
+    currentPage: $currentPage
+    filter: $filters
+    sort: $sort
+    search: $search
+  ) {
+    ...ProductListCount
+    ...ProductListPagination
+    ...ProductListSort
+    ...ProductListItems
+  }
+}

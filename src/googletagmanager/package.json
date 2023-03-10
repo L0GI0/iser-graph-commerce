@@ -1,0 +1,28 @@
+{
+  "name": "@graphcommerce/googletagmanager",
+  "homepage": "https://www.graphcommerce.org/",
+  "repository": "github:graphcommerce-org/graphcommerce",
+  "version": "5.1.1",
+  "sideEffects": false,
+  "prettier": "@graphcommerce/prettier-config-pwa",
+  "eslintConfig": {
+    "extends": "@graphcommerce/eslint-config-pwa",
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    }
+  },
+  "devDependencies": {
+    "@graphcommerce/eslint-config-pwa": "5.1.1",
+    "@graphcommerce/prettier-config-pwa": "5.1.1",
+    "@graphcommerce/typescript-config-pwa": "5.1.1",
+    "@types/gapi.client.tagmanager": "^2.0.2"
+  },
+  "dependencies": {
+    "@graphcommerce/magento-product": "5.1.1"
+  },
+  "peerDependencies": {
+    "next": "^12.1.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}

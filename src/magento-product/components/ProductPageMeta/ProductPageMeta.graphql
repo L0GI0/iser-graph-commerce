@@ -1,0 +1,7 @@
+fragment ProductPageMeta on ProductInterface {
+  ...ProductLink
+  name
+  url_key
+  meta_title
+  meta_description
+}

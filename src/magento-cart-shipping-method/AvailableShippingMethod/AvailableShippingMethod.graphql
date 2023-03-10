@@ -1,0 +1,11 @@
+fragment AvailableShippingMethod on AvailableShippingMethod {
+  amount {
+    ...Money
+  }
+  available
+  carrier_code
+  carrier_title
+  error_message
+  method_code
+  method_title
+}

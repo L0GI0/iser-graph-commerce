@@ -1,0 +1,7 @@
+fragment ProductPageDescription on ProductInterface {
+  name
+  ...ProductShortDescription
+  description {
+    ...ComplexTextValue
+  }
+}
