@@ -1,5 +1,0 @@
-{
-  "exclude": ["node_modules"],
-  "include": ["**/*.ts", "**/*.tsx", "../magento-payment-included/Checkmo.tsx"],
-  "extends": "@graphcommerce/typescript-config-pwa/nextjs.json"
-}

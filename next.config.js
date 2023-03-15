@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { PerformanceObserver, performance } = require('perf_hooks')
-const withYarn1Workspaces = require('@graphcommerce/next-config').withYarn1Scopes()
+const withYarn1Workspaces = require('./src/next-config').withYarn1Scopes()
 
 require('dotenv').config({ path: `${__dirname}/.env` })
 
@@ -41,7 +41,7 @@ if (!process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT) {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    scrollRestoration: true,
+    scrollRestoration: false,
     browsersListForSwc: true,
     legacyBrowsers: false,
   },

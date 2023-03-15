@@ -8,10 +8,15 @@
     "bin/is-monorepo.ts",
     "index.ts"
   ],
-  "extends": "@graphcommerce/typescript-config-pwa/node.json",
+  "extends": "../typescript-config-pwa/node.json",
   "compilerOptions": {
     "noEmit": false,
     "outDir": "dist",
-    "sourceMap": false
+    "sourceMap": false,
+    "baseUrl": "../../",
+    "paths": {
+      "@graphcommerce": ["src"],
+      "@graphcommerce/*": ["src/*"]
+    }
   }
 }

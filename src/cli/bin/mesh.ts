@@ -77,7 +77,7 @@ const main = async () => {
     conf.additionalTypeDefs.push('../../packages/**/*.graphqls')
     conf.additionalTypeDefs.push('../../packagesDev/**/*.graphqls')
   } else {
-    conf.additionalTypeDefs.push('node_modules/@graphcommerce/**/*.graphqls')
+    conf.additionalTypeDefs.push('@graphcommerce/**/*.graphqls')
   }
 
   if (!conf.serve) conf.serve = {}

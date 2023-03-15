@@ -1,4 +1,4 @@
-const { isMonorepo } = require('@graphcommerce/next-config')
+const { isMonorepo } = require('../next-config')
 
 /**
  * Augmenting the locale config to be compatible with GraphCommerce.
