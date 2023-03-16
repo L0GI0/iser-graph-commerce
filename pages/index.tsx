@@ -40,7 +40,7 @@ function CmsPage(props: GetPageStaticProps) {
         <RenderType key={item.id} renderer={mergedRenderer} {...item} />
       ))} */}
       <RowHeroBanner
-        heroAsset={{url: "https://media.graphassets.com/aFZrDZNCSZCiGlq6oZnC"}} 
+        heroAsset={{url: "https://www.shutterstock.com/shutterstock/videos/1088327201/preview/stock-footage-chiusaforte-italy-rolling-shots-of-two-cars-bmw-m-and-bmw-m-racing-at-high-speed-in.webm"}} 
         pageLinks={[{title: "Shop Art", url: "/men/art"}]}/>
     </>
 

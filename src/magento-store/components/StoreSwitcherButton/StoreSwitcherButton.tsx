@@ -14,7 +14,17 @@ export function StoreSwitcherButton(props: StoreSwitcherButtonProps) {
   const { sx } = props
   // const config = useQuery(StoreConfigDocument)
   // const country = config.data?.storeConfig?.locale?.split('_')?.[1]?.toLowerCase() ?? ''
-  const country = ''
+  const country = 'pl'
+
+  const config = {
+    data: {
+      storeConfig: {
+        store_name: "Iser Performance",
+        base_currency_code: "EUR"
+      }
+      
+    }
+  }
 
   const router = useRouter()
 
@@ -31,7 +41,7 @@ export function StoreSwitcherButton(props: StoreSwitcherButtonProps) {
         className={classes.avatar}
         sx={{ height: 20, width: 20, marginRight: '10px' }}
       />
-      {/* {config.data?.storeConfig?.store_name} - {config.data?.storeConfig?.base_currency_code} */}
+      {config.data?.storeConfig?.store_name} - {config.data?.storeConfig?.base_currency_code}
     </Button>
   )
 }
