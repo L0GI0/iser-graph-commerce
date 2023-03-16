@@ -9,11 +9,13 @@ export function useCustomerQuery<Q, V>(
   const { hydration, ...queryOptions } = options
   const { loggedIn } = useCustomerSession({ hydration })
 
-  const result = useQuery(document, {
-    ...queryOptions,
-    ssr: false,
-    skip: !loggedIn,
-  })
+  // const result = useQuery(document, {
+  //   ...queryOptions,
+  //   ssr: false,
+  //   skip: !loggedIn,
+  // })
+
+  const result = {}
 
   return result
 }

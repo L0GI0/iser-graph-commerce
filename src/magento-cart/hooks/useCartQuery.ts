@@ -36,10 +36,10 @@ export function useCartQuery<Q, V extends { cartId: string; [index: string]: unk
   queryOptions.skip = queryOptions?.skip || !cartId
   queryOptions.ssr = !!hydration
 
-  const result = useQuery(document, queryOptions)
+  // const result = useQuery(document, queryOptions)
 
   return {
-    ...result,
+    // ...result,
     // error: called && !currentCartId ? noCartError : result.error,
   }
 }

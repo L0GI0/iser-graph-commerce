@@ -7,5 +7,5 @@ export function useGuestQuery<Q, V>(
   queryOptions: QueryHookOptions<Q, V> & { hydration?: boolean } = {},
 ) {
   const { token } = useCustomerSession({ hydration: queryOptions.hydration })
-  return useQuery(document, { ...queryOptions, ssr: false, skip: !!token })
+  return {}
 }

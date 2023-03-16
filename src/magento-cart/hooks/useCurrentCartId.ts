@@ -20,11 +20,9 @@ export function useCurrentCartId<Q, V>(options: UseCurrentCartIdOptions<Q, V> = 
 
   const skip = options.skip !== undefined ? options.skip : hydrating
 
-  const { data, ...queryResults } = useQuery(CurrentCartIdDocument, { ...queryOptions, skip })
+  // const { data, ...queryResults } = useQuery(CurrentCartIdDocument, { ...queryOptions, skip })
 
   return {
-    currentCartId: data?.currentCartId?.id || '',
-    data,
-    ...queryResults,
+    currentCartId: '',
   }
 }

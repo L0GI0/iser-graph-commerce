@@ -8,6 +8,6 @@ import { StoreConfigDocument } from '../../StoreConfig.gql'
 export type GlobalHeadProps = Omit<GlobalHeadPropsBase, 'name'>
 
 export function GlobalHead(props: GlobalHeadProps) {
-  const name = useQuery(StoreConfigDocument).data?.storeConfig?.website_name ?? ''
-  return <GlobalHeadBase name={name} {...props} />
+  // const name = useQuery(StoreConfigDocument).data?.storeConfig?.website_name ?? ''
+  return <GlobalHeadBase name={'query-data'} {...props} />
 }
