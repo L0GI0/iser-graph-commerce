@@ -20,6 +20,7 @@ import React from 'react'
 import { ProductListItemFragment } from '../../Api/ProductListItem.gql'
 import { useProductLink } from '../../hooks/useProductLink'
 import { ProductListPrice } from '../ProductListPrice/ProductListPrice'
+import { Product } from '@vercel/commerce/types/product'
 
 const { classes, selectors } = extendableComponent('ProductListItem', [
   'root',
@@ -50,13 +51,13 @@ type StyleProps = {
 
 type BaseProps = { subTitle?: React.ReactNode; children?: React.ReactNode } & StyleProps &
   OverlayAreas &
-  ProductListItemFragment &
+  Product &
   Pick<ImageProps, 'loading' | 'sizes' | 'dontReportWronglySizedImages'>
 
 export type ProductListItemProps = BaseProps & {
   sx?: SxProps<Theme>
   titleComponent?: React.ElementType
-  onClick?: (event: React.MouseEvent<HTMLAnchorElement>, item: ProductListItemFragment) => void
+  onClick?: (event: React.MouseEvent<HTMLAnchorElement>, item: Product) => void
 }
 
 const StyledImage = styled(Image)({})
@@ -68,9 +69,8 @@ export function ProductListItem(props: ProductListItemProps) {
     topRight,
     bottomLeft,
     bottomRight,
-    small_image,
     name,
-    price_range,
+    images,
     children,
     imageOnly = false,
     loading,
@@ -86,7 +86,10 @@ export function ProductListItem(props: ProductListItemProps) {
     onClick?.(e, props),
   )
 
-  const productLink = useProductLink(props)
+  //to integrate
+  // const productLink = useProductLink(props)
+
+  const productLink = ''
   const discount = Math.floor(price_range.minimum_price.discount?.percent_off ?? 0)
 
   const formatter = useNumberFormat({ style: 'percent', maximumFractionDigits: 1 })
