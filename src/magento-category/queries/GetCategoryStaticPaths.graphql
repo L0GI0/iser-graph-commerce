@@ -1,0 +1,28 @@
+query GetCategoryStaticPaths {
+  categories {
+    items {
+      uid
+      url_path
+      children {
+        uid
+        url_path
+        children {
+          uid
+          url_path
+          children {
+            uid
+            url_path
+            children {
+              uid
+              url_path
+              children {
+                uid
+                url_path
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

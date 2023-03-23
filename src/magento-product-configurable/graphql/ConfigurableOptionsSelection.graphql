@@ -1,0 +1,20 @@
+fragment ConfigurableOptionsSelection on ConfigurableProduct @injectable {
+  configurable_product_options_selection(configurableOptionValueUids: $selectedOptions) {
+    __typename
+    options_available_for_selection {
+      __typename
+      attribute_code
+    }
+    media_gallery {
+      __typename
+      label
+      position
+      disabled
+      ...ProductImage
+      ...ProductVideo
+    }
+    variant {
+      ...ConfiguredVariant
+    }
+  }
+}

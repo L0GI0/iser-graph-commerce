@@ -1,0 +1,41 @@
+fragment CartItem on CartItemInterface @injectable {
+  uid
+  quantity
+  product {
+    uid
+    ...ProductLink
+    sku
+    name
+    url_key
+    sku
+    thumbnail {
+      ...ProductImage
+    }
+  }
+
+  prices {
+    discounts {
+      amount {
+        ...Money
+      }
+      label
+    }
+    price {
+      ...Money
+    }
+    row_total {
+      ...Money
+    }
+    row_total_including_tax {
+      ...Money
+    }
+    total_item_discount {
+      ...Money
+    }
+  }
+
+  errors {
+    code
+    message
+  }
+}

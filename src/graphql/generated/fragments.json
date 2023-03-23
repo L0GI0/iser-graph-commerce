@@ -1,0 +1,141 @@
+{
+  "possibleTypes": {
+    "AggregationOptionInterface": [
+      "AggregationOption"
+    ],
+    "CartAddressInterface": [
+      "BillingCartAddress",
+      "ShippingCartAddress"
+    ],
+    "CartItemInterface": [
+      "BundleCartItem",
+      "ConfigurableCartItem",
+      "DownloadableCartItem",
+      "SimpleCartItem",
+      "VirtualCartItem"
+    ],
+    "CategoryInterface": [
+      "CategoryTree"
+    ],
+    "CreditMemoItemInterface": [
+      "BundleCreditMemoItem",
+      "CreditMemoItem",
+      "DownloadableCreditMemoItem"
+    ],
+    "CustomizableOptionInterface": [
+      "CustomizableAreaOption",
+      "CustomizableCheckboxOption",
+      "CustomizableDateOption",
+      "CustomizableDropDownOption",
+      "CustomizableFieldOption",
+      "CustomizableFileOption",
+      "CustomizableMultipleOption",
+      "CustomizableRadioOption"
+    ],
+    "CustomizableProductInterface": [
+      "BundleProduct",
+      "ConfigurableProduct",
+      "DownloadableProduct",
+      "SimpleProduct",
+      "VirtualProduct"
+    ],
+    "InvoiceItemInterface": [
+      "BundleInvoiceItem",
+      "DownloadableInvoiceItem",
+      "InvoiceItem"
+    ],
+    "LayerFilterItemInterface": [
+      "LayerFilterItem",
+      "SwatchLayerFilterItem"
+    ],
+    "MediaGalleryInterface": [
+      "ProductImage",
+      "ProductVideo"
+    ],
+    "Node": [
+      "Asset",
+      "Footer",
+      "Page",
+      "PageLink",
+      "RowBlogContent",
+      "RowButtonLinkList",
+      "RowColumnOne",
+      "RowColumnThree",
+      "RowColumnTwo",
+      "RowContentLinks",
+      "RowHeroBanner",
+      "RowLinks",
+      "RowProduct",
+      "RowQuote",
+      "RowServiceOptions",
+      "RowSpecialBanner",
+      "Usps"
+    ],
+    "OrderItemInterface": [
+      "BundleOrderItem",
+      "DownloadableOrderItem",
+      "OrderItem"
+    ],
+    "PageContent": [
+      "RowBlogContent",
+      "RowButtonLinkList",
+      "RowColumnOne",
+      "RowColumnThree",
+      "RowColumnTwo",
+      "RowContentLinks",
+      "RowHeroBanner",
+      "RowLinks",
+      "RowProduct",
+      "RowQuote",
+      "RowServiceOptions",
+      "RowSpecialBanner"
+    ],
+    "PhysicalProductInterface": [
+      "BundleProduct",
+      "ConfigurableProduct",
+      "GroupedProduct",
+      "SimpleProduct"
+    ],
+    "ProductInterface": [
+      "BundleProduct",
+      "ConfigurableProduct",
+      "DownloadableProduct",
+      "GroupedProduct",
+      "SimpleProduct",
+      "VirtualProduct"
+    ],
+    "ProductLinksInterface": [
+      "ProductLinks"
+    ],
+    "RoutableInterface": [
+      "BundleProduct",
+      "CategoryTree",
+      "CmsPage",
+      "ConfigurableProduct",
+      "DownloadableProduct",
+      "GroupedProduct",
+      "SimpleProduct",
+      "VirtualProduct"
+    ],
+    "ShipmentItemInterface": [
+      "BundleShipmentItem",
+      "ShipmentItem"
+    ],
+    "SwatchDataInterface": [
+      "ColorSwatchData",
+      "ImageSwatchData",
+      "TextSwatchData"
+    ],
+    "SwatchLayerFilterItemInterface": [
+      "SwatchLayerFilterItem"
+    ],
+    "WishlistItemInterface": [
+      "BundleWishlistItem",
+      "ConfigurableWishlistItem",
+      "DownloadableWishlistItem",
+      "GroupedProductWishlistItem",
+      "SimpleWishlistItem",
+      "VirtualWishlistItem"
+    ]
+  }
+}
