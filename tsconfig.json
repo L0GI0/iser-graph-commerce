@@ -26,6 +26,6 @@
     "incremental": true
   },
   "exclude": ["**/node_modules", "**/.*/"],
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx", "src/graphql-mesh/index.ts"],
   "extends": "./src/typescript-config-pwa/nextjs.json"
 }
