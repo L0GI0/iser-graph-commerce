@@ -98,7 +98,7 @@ export function IserProductListItem(props: ProductListItemProps) {
 
   return (
     <ButtonBase
-      href={productLink}
+      href={name}
       sx={[
         (theme) => ({
           display: 'block',

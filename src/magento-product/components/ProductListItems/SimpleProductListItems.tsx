@@ -9,7 +9,9 @@ import { ProductListItemRenderer } from './renderer'
 import { AddProductsToCartFab } from '@graphcommerce/magento-product'
 import { IserProductListItem } from '../ProductListItem/IserProductListItem'
 import { Product } from '@vercel/commerce/types/product'
-
+import {
+  AddProductsToCartForm,
+} from '@graphcommerce/magento-product'
 
 export type ProductItemsGridProps = {
   items?:
@@ -22,7 +24,7 @@ export type ProductItemsGridProps = {
   sx?: BoxProps['sx']
 } & Pick<ProductListItemProps, 'onClick' | 'titleComponent'>
 
-export function SimpleProductListItems(props: ProductItemsGridProps) {
+function SimpleProductListItemsBase(props: ProductItemsGridProps) {
   const {
     items,
     sx = [],
@@ -71,5 +73,13 @@ export function SimpleProductListItems(props: ProductItemsGridProps) {
         ) : null,
       )}
     </Box>
+  )
+}
+
+export function SimpleProductListItems(props: ProductItemsGridProps) {
+  return (
+    <AddProductsToCartForm>
+      <SimpleProductListItemsBase {...props} />
+    </AddProductsToCartForm>
   )
 }

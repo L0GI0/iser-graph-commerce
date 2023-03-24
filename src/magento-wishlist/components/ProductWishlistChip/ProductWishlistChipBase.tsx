@@ -25,11 +25,12 @@ import { GuestWishlistDocument } from '../../queries/GuestWishlist.gql'
 import { RemoveProductFromWishlistDocument } from '../../queries/RemoveProductFromWishlist.gql'
 import { WishlistSummaryFragment } from '../../queries/WishlistSummaryFragment.gql'
 import { ProductWishlistChipFragment } from './ProductWishlistChip.gql'
+import { Product } from '@vercel/commerce/types/product'
 
 const hideForGuest = import.meta.graphCommerce.wishlistHideForGuests
 const ignoreProductWishlistStatus = import.meta.graphCommerce.wishlistIgnoreProductWishlistStatus
 
-export type ProductWishlistChipProps = ProductWishlistChipFragment & { sx?: SxProps<Theme> } & {
+export type ProductWishlistChipProps = Product & { sx?: SxProps<Theme> } & {
   showFeedbackMessage?: boolean
   buttonProps?: IconButtonProps
 }
@@ -43,7 +44,7 @@ const parts = ['root', 'wishlistIcon', 'wishlistIconActive', 'wishlistButton'] a
 const { classes } = extendableComponent(compName, parts)
 
 export function ProductWishlistChipBase(props: ProductWishlistChipProps) {
-  const { name, sku, url_key, showFeedbackMessage, buttonProps, sx = [] } = props
+  const { name, sku, id, path, showFeedbackMessage, buttonProps, sx = [] } = props
 
   // const addToCartForm = useFormAddProductsToCart(true)
 
@@ -85,29 +86,29 @@ export function ProductWishlistChipBase(props: ProductWishlistChipProps) {
     />
   )
 
-  useEffect(() => {
-    // Do not display wishlist UI to guests when configured as customer only
-    // if (hideForGuest && !loggedIn) {
-    //   return
-    // }
+  // useEffect(() => {
+  //   // Do not display wishlist UI to guests when configured as customer only
+  //   // if (hideForGuest && !loggedIn) {
+  //   //   return
+  //   // }
 
-    // if (!url_key || !sku) {
-    //   return
-    // }
+  //   // if (!url_key || !sku) {
+  //   //   return
+  //   // }
 
-    // Mark as active when product is available in either customer or guest wishlist
-    // if (loggedIn && !loading) {
-    //   const inWishlistTest =
-    //     GetCustomerWishlistData?.customer?.wishlists[0]?.items_v2?.items.map(
-    //       (item) => item?.product?.url_key,
-    //     ) || []
-    //   setInWishlist(inWishlistTest.includes(url_key))
-    // } else if (!loggedIn) {
-    //   const inWishlistTest =
-    //     guestWishlistData?.guestWishlist?.items.map((item) => item?.url_key) || []
-    //   setInWishlist(inWishlistTest.includes(url_key))
-    // }
-  }, [loggedIn, url_key, sku])
+  //   // Mark as active when product is available in either customer or guest wishlist
+  //   // if (loggedIn && !loading) {
+  //   //   const inWishlistTest =
+  //   //     GetCustomerWishlistData?.customer?.wishlists[0]?.items_v2?.items.map(
+  //   //       (item) => item?.product?.url_key,
+  //   //     ) || []
+  //   //   setInWishlist(inWishlistTest.includes(url_key))
+  //   // } else if (!loggedIn) {
+  //   //   const inWishlistTest =
+  //   //     guestWishlistData?.guestWishlist?.items.map((item) => item?.url_key) || []
+  //   //   setInWishlist(inWishlistTest.includes(url_key))
+  //   // }
+  // }, [loggedIn, path, sku])
 
   const preventAnimationBubble: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault()
@@ -182,7 +183,7 @@ export function ProductWishlistChipBase(props: ProductWishlistChipProps) {
   const output = (
     <Box>
       <IconButton
-        key={url_key}
+        key={id}
         onClick={handleClick}
         onMouseDown={preventAnimationBubble}
         size='small'
