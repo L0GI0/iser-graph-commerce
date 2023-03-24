@@ -12,9 +12,21 @@ const { classes } = extendableComponent(name, parts)
 
 export function StoreSwitcherButton(props: StoreSwitcherButtonProps) {
   const { sx } = props
-  const config = useQuery(StoreConfigDocument)
-  const country = config.data?.storeConfig?.locale?.split('_')?.[1]?.toLowerCase() ?? ''
+  // const config = useQuery(StoreConfigDocument)
+  // const country = config.data?.storeConfig?.locale?.split('_')?.[1]?.toLowerCase() ?? ''
   const router = useRouter()
+
+  const country = 'pl'
+
+  const config = {
+    data: {
+      storeConfig: {
+        store_name: "Iser Performance",
+        base_currency_code: "EUR"
+      }
+      
+    }
+  }
 
   return (
     <Button

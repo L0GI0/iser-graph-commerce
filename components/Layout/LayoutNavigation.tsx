@@ -33,6 +33,98 @@ import { Logo } from './Logo'
 export type LayoutNavigationProps = LayoutQuery &
   Omit<LayoutDefaultProps, 'footer' | 'header' | 'cartFab' | 'menuFab'>
 
+  const IserPerformanceFooter = {
+    id: "Iser Performance Social",
+    socialLinks: [
+       {
+          "title": "LinkedIn",
+          "url": "https://www.linkedin.com/",
+          "description": null,
+          "asset": {
+             "url": "https://media.graphassets.com/IbRYG48HQZy6jkHXbg1A",
+             "width": 24,
+             "height": 24,
+             "mimeType": "image/svg+xml",
+             "size": 1367,
+             "alt": null
+          }
+       },
+       {
+          "title": "Facebook",
+          "url": "https://www.facebook.com/",
+          "description": null,
+          "asset": {
+             "url": "https://media.graphassets.com/nPrSPDvuSlaH1v7RMtQe",
+             "width": 24,
+             "height": 24,
+             "mimeType": "image/svg+xml",
+             "size": 946,
+             "alt": null
+          }
+       },
+       {
+          "title": "Twitter",
+          "url": "https://twitter.com/graphcommerce",
+          "description": null,
+          "asset": {
+             "url": "https://media.graphassets.com/hBVGbMYSamZORCYL8QEh",
+             "width": 24,
+             "height": 24,
+             "mimeType": "image/svg+xml",
+             "size": 1746,
+             "alt": null
+          }
+       },
+       {
+          "title": "Instagram",
+          "url": "https://www.instagram.com/",
+          "description": null,
+          "asset": {
+             "url": "https://media.graphassets.com/umAAlfrLTnGRjBwqQhNA",
+             "width": 24,
+             "height": 24,
+             "mimeType": "image/svg+xml",
+             "size": 3607,
+             "alt": null
+          }
+       }
+    ],
+    "copyright": "© Iser Performance® 2022",
+    "legalLinks": [
+       {
+          "title": "Terms and conditions",
+          "url": "/terms-and-conditions",
+          "description": null,
+          "asset": null
+       },
+       {
+          "title": "Credits",
+          "url": "/credits",
+          "description": null,
+          "asset": null
+       },
+       {
+          "title": "Subscribe",
+          "url": "/newsletter",
+          "description": {
+             "raw": {
+                "children": [
+                   {
+                      "type": "paragraph",
+                      "children": [
+                         {
+                            "text": ""
+                         }
+                      ]
+                   }
+                ]
+             }
+          },
+          "asset": null
+       }
+    ]
+  }
+
 export function LayoutNavigation(props: LayoutNavigationProps) {
   const { footer, menu, children, ...uiProps } = props
 
@@ -145,7 +237,7 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
             </DesktopNavActions>
           </>
         }
-        footer={<Footer footer={footer} />}
+        footer={<Footer footer={IserPerformanceFooter} />}
         cartFab={<CartFab />}
         menuFab={<NavigationFab onClick={() => selection.set([])} />}
       >

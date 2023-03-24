@@ -20,6 +20,7 @@ const nextConfig = {
   optimizeFonts: false,
   images: {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    domains: ['cdn.shopify.com'],
   },
   productionBrowserSourceMaps: true,
   eslint: {

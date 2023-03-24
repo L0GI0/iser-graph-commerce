@@ -22,11 +22,15 @@ export function useCurrentCartId<Q, V extends OperationVariables>(
 
   const skip = options.skip !== undefined ? options.skip : hydrating
 
-  const { data, ...queryResults } = useQuery(CurrentCartIdDocument, { ...queryOptions, skip })
+  // const { data, ...queryResults } = useQuery(CurrentCartIdDocument, { ...queryOptions, skip })
+
+  // return {
+  //   currentCartId: data?.currentCartId?.id || '',
+  //   data,
+  //   ...queryResults,
+  // }
 
   return {
-    currentCartId: data?.currentCartId?.id || '',
-    data,
-    ...queryResults,
+    currentCardId: '',
   }
 }

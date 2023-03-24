@@ -14,13 +14,17 @@ export function writeCartId(cache: ApolloCache<object>, id: string | null = null
 }
 
 export function useAssignCurrentCartId() {
-  const { cache } = useApolloClient()
+  // const { cache } = useApolloClient()
 
-  return useCallback(
-    (id: string) => {
-      writeCartId(cache, id)
-      cookie(CART_ID_COOKIE, id)
-    },
-    [cache],
-  )
+  // return useCallback(
+  //   (id: string) => {
+  //     writeCartId(cache, id)
+  //     cookie(CART_ID_COOKIE, id)
+  //   },
+  //   [cache],
+  // )
+
+  return {
+
+  }
 }

@@ -35,10 +35,11 @@ export function useFormGqlMutation<Q extends Record<string, unknown>, V extends 
   operationOptions?: MutationHookOptions<Q, V>,
 ): UseFormGqlMutationReturn<Q, V> {
   const form = useForm<V>(options)
-  const tuple = useMutation(document, operationOptions)
-  const operation = useFormGql({ document, form, tuple, ...options })
-  const muiRegister = useFormMuiRegister(form)
-  const valid = useFormValidFields(form, operation.required)
+  // const tuple = useMutation(document, operationOptions)
+  // const operation = useFormGql({ document, form, tuple, ...options })
+  // const muiRegister = useFormMuiRegister(form)
+  // const valid = useFormValidFields(form, operation.required)
 
-  return { ...form, ...operation, valid, muiRegister }
+  // return { ...form, ...operation, valid, muiRegister }
+  return { ...form }
 }

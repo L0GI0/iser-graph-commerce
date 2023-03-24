@@ -45,20 +45,20 @@ const { classes } = extendableComponent(compName, parts)
 export function ProductWishlistChipBase(props: ProductWishlistChipProps) {
   const { name, sku, url_key, showFeedbackMessage, buttonProps, sx = [] } = props
 
-  const addToCartForm = useFormAddProductsToCart(true)
+  // const addToCartForm = useFormAddProductsToCart(true)
 
   const [inWishlist, setInWishlist] = useState(false)
-  const [displayMessageBar, setDisplayMessageBar] = useState(false)
+  // const [displayMessageBar, setDisplayMessageBar] = useState(false)
 
   const { loggedIn } = useCustomerSession()
-  const [addWishlistItem] = useMutation(AddProductToWishlistDocument)
-  const [removeWishlistItem] = useMutation(RemoveProductFromWishlistDocument)
+  // const [addWishlistItem] = useMutation(AddProductToWishlistDocument)
+  // const [removeWishlistItem] = useMutation(RemoveProductFromWishlistDocument)
 
-  const { data: GetCustomerWishlistData, loading } = useCustomerQuery(GetIsInWishlistsDocument)
+  // const { data: GetCustomerWishlistData, loading } = useCustomerQuery(GetIsInWishlistsDocument)
 
-  const { data: guestWishlistData } = useGuestQuery(GuestWishlistDocument)
+  // const { data: guestWishlistData } = useGuestQuery(GuestWishlistDocument)
 
-  const { cache } = useApolloClient()
+  // const { cache } = useApolloClient()
 
   const isWishlistEnabled = useWishlistEnabled()
 
@@ -87,27 +87,27 @@ export function ProductWishlistChipBase(props: ProductWishlistChipProps) {
 
   useEffect(() => {
     // Do not display wishlist UI to guests when configured as customer only
-    if (hideForGuest && !loggedIn) {
-      return
-    }
+    // if (hideForGuest && !loggedIn) {
+    //   return
+    // }
 
-    if (!url_key || !sku) {
-      return
-    }
+    // if (!url_key || !sku) {
+    //   return
+    // }
 
     // Mark as active when product is available in either customer or guest wishlist
-    if (loggedIn && !loading) {
-      const inWishlistTest =
-        GetCustomerWishlistData?.customer?.wishlists[0]?.items_v2?.items.map(
-          (item) => item?.product?.url_key,
-        ) || []
-      setInWishlist(inWishlistTest.includes(url_key))
-    } else if (!loggedIn) {
-      const inWishlistTest =
-        guestWishlistData?.guestWishlist?.items.map((item) => item?.url_key) || []
-      setInWishlist(inWishlistTest.includes(url_key))
-    }
-  }, [loggedIn, url_key, loading, GetCustomerWishlistData, guestWishlistData, sku])
+    // if (loggedIn && !loading) {
+    //   const inWishlistTest =
+    //     GetCustomerWishlistData?.customer?.wishlists[0]?.items_v2?.items.map(
+    //       (item) => item?.product?.url_key,
+    //     ) || []
+    //   setInWishlist(inWishlistTest.includes(url_key))
+    // } else if (!loggedIn) {
+    //   const inWishlistTest =
+    //     guestWishlistData?.guestWishlist?.items.map((item) => item?.url_key) || []
+    //   setInWishlist(inWishlistTest.includes(url_key))
+    // }
+  }, [loggedIn, url_key, sku])
 
   const preventAnimationBubble: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault()
@@ -122,61 +122,61 @@ export function ProductWishlistChipBase(props: ProductWishlistChipProps) {
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault()
 
-    const selectedOptions = addToCartForm?.getValues().cartItems?.[0]?.selected_options ?? []
-    const selected_options = Array.isArray(selectedOptions) ? selectedOptions : [selectedOptions]
+    // const selectedOptions = addToCartForm?.getValues().cartItems?.[0]?.selected_options ?? []
+    // const selected_options = Array.isArray(selectedOptions) ? selectedOptions : [selectedOptions]
 
-    if (!url_key || !sku) {
-      return
-    }
+    // if (!url_key || !sku) {
+    //   return
+    // }
 
-    if (loggedIn) {
-      if (inWishlist && !ignoreProductWishlistStatus) {
-        const wishlistItemsInSession =
-          GetCustomerWishlistData?.customer?.wishlists[0]?.items_v2?.items || []
+    // if (loggedIn) {
+    //   if (inWishlist && !ignoreProductWishlistStatus) {
+    //     const wishlistItemsInSession =
+    //       GetCustomerWishlistData?.customer?.wishlists[0]?.items_v2?.items || []
 
-        const item = wishlistItemsInSession.find((element) => element?.product?.url_key === url_key)
+    //     const item = wishlistItemsInSession.find((element) => element?.product?.url_key === url_key)
 
-        if (item?.id) {
-          // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          removeWishlistItem({ variables: { wishlistItemId: item.id } })
-        }
-      } else {
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        addWishlistItem({ variables: { input: [{ sku, quantity: 1, selected_options }] } })
-        setDisplayMessageBar(true)
-      }
-    } else if (inWishlist) {
-      cache.modify({
-        id: cache.identify({ __typename: 'GuestWishlist' }),
-        fields: {
-          items(existingItems: WishListItemType[] = []) {
-            const items = existingItems.filter((item) => item?.url_key !== url_key)
-            return items
-          },
-        },
-      })
-    } else {
-      /** Merging of wishlist items is done by policy, see typePolicies.ts */
-      cache.writeQuery({
-        query: GuestWishlistDocument,
-        data: {
-          guestWishlist: {
-            __typename: 'GuestWishlist',
-            items: [
-              {
-                __typename: 'GuestWishlistItem',
-                sku,
-                url_key,
-                quantity: 1,
-                selected_options,
-              },
-            ],
-          },
-        },
-        broadcast: true,
-      })
-      setDisplayMessageBar(true)
-    }
+    //     if (item?.id) {
+    //       // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    //       // removeWishlistItem({ variables: { wishlistItemId: item.id } })
+    //     }
+    //   } else {
+    //     // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    //     // addWishlistItem({ variables: { input: [{ sku, quantity: 1, selected_options }] } })
+    //     setDisplayMessageBar(true)
+    //   }
+    // } else if (inWishlist) {
+    //   // cache.modify({
+    //   //   id: cache.identify({ __typename: 'GuestWishlist' }),
+    //   //   fields: {
+    //   //     items(existingItems: WishListItemType[] = []) {
+    //   //       const items = existingItems.filter((item) => item?.url_key !== url_key)
+    //   //       return items
+    //   //     },
+    //   //   },
+    //   // })
+    // } else {
+    //   /** Merging of wishlist items is done by policy, see typePolicies.ts */
+    //   // cache.writeQuery({
+    //   //   query: GuestWishlistDocument,
+    //   //   data: {
+    //   //     guestWishlist: {
+    //   //       __typename: 'GuestWishlist',
+    //   //       items: [
+    //   //         {
+    //   //           __typename: 'GuestWishlistItem',
+    //   //           sku,
+    //   //           url_key,
+    //   //           quantity: 1,
+    //   //           selected_options,
+    //   //         },
+    //   //       ],
+    //   //     },
+    //   //   },
+    //   //   broadcast: true,
+    //   // })
+    //   setDisplayMessageBar(true)
+    // }
   }
 
   const output = (
@@ -205,10 +205,10 @@ export function ProductWishlistChipBase(props: ProductWishlistChipProps) {
             : i18n._(/* i18n */ 'Add to wishlist')
         }
       >
-        {inWishlist ? activeHeart : heart}
+        {heart}
       </IconButton>
 
-      <MessageSnackbar
+      {/* <MessageSnackbar
         open={showFeedbackMessage && displayMessageBar}
         onClose={() => setDisplayMessageBar(false)}
         onClick={preventLinkOnClose}
@@ -233,11 +233,11 @@ export function ProductWishlistChipBase(props: ProductWishlistChipProps) {
           components={{ 0: <strong /> }}
           values={{ name }}
         />
-      </MessageSnackbar>
+      </MessageSnackbar> */}
     </Box>
   )
 
-  return !hideForGuest || loggedIn ? output : null
+  return output
 }
 
 ProductWishlistChipBase.defaultProps = {

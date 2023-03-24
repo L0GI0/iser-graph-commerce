@@ -27,7 +27,12 @@ declare module '@mui/material/styles/components' {
 export function Money(props: MoneyProps) {
   const { currency, value, round = false, formatOptions } = useThemeProps({ name, props })
 
-  const { data: config } = useQuery(StoreConfigDocument)
+  // const { data: config } = useQuery(StoreConfigDocument)
+  const config = {
+    storeConfig: {
+      base_currency_code: "EUR"
+    }
+  }
 
   const digits = (value ?? 0) % 1 !== 0
 
@@ -40,7 +45,9 @@ export function Money(props: MoneyProps) {
       ...(!round && { minimumFractionDigits: 2 }),
       ...formatOptions,
     }),
-    [config?.storeConfig?.base_currency_code, currency, digits, formatOptions, round],
+    // [config?.storeConfig?.base_currency_code, currency, digits, formatOptions, round],
+    [currency, digits, formatOptions, round],
+
   )
   const numberFormatter = useNumberFormat(options)
 

@@ -14,7 +14,10 @@ export type AddProductsToCartFabProps = {
 
 export function AddProductsToCartFab(props: AddProductsToCartFabProps) {
   const { icon = iconShoppingBag } = props
-  const action = useAddProductsToCartAction(props)
+  // const action = useAddProductsToCartAction(props)
+  const action = () => {
+    console.log(`Product added to card`)
+  }
   return (
     <Fab
       type='submit'

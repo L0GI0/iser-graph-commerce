@@ -41,14 +41,26 @@ export function useCustomerSession(options: UseCustomerSessionOptions = {}) {
 
   const skip = hydrating
 
-  const query = useQuery(CustomerTokenDocument, { skip })
+  // const query = useQuery(CustomerTokenDocument, { skip })
 
-  const token = query.data?.customerToken
+  // const token = query.data?.customerToken
+
+  const sessionData = {
+    loggedIn: false,
+    requireAuth: false,
+    query: {},
+    __typename: "CustomerToken",
+    token: "test-token"
+  }
+
+  // return {
+  //   ...token,
+  //   loggedIn: Boolean(token?.token && token.valid),
+  //   requireAuth: Boolean(!token || !token.valid),
+  //   query,
+  // }
 
   return {
-    ...token,
-    loggedIn: Boolean(token?.token && token.valid),
-    requireAuth: Boolean(!token || !token.valid),
-    query,
+    ...sessionData
   }
 }
