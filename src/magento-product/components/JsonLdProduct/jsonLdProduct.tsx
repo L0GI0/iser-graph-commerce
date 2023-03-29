@@ -1,37 +1,38 @@
 import type { ProductImage } from '@graphcommerce/graphql-mesh'
-import type { Product } from 'schema-dts'
+import type { Product as SchemaProduct} from 'schema-dts'
 import { JsonLdProductFragment } from './JsonLdProduct.gql'
 import { JsonLdProductOfferFragment } from './JsonLdProductOffer.gql'
+import { Product } from '@vercel/commerce/types/product'
 
-export function jsonLdProduct(props: JsonLdProductFragment): Product {
-  const { name, sku, media_gallery, categories, description } = props
+export function jsonLdProduct(props: Product): SchemaProduct {
+  const { name, sku, images, vendor, descriptionHtml } = props
 
   return {
     '@type': 'Product',
     name: name ?? undefined,
     sku: sku ?? undefined,
-    image: media_gallery
-      ? media_gallery?.map((img) => (img as ProductImage)?.url ?? '')
+    image: images
+      ? images?.map((img) => (img as ProductImage)?.url ?? '')
       : undefined,
-    category: categories?.[0]?.name ?? undefined,
-    description: description?.html
-      ? (description.html ?? '').replace(/(<([^>]+)>)/gi, '')
+    category: vendor ?? undefined,
+    description: descriptionHtml
+      ? (descriptionHtml?? '').replace(/(<([^>]+)>)/gi, '')
       : undefined,
   }
 }
 
 /** @see https://developers.google.com/search/docs/advanced/structured-data/product */
-export function jsonLdProductOffer(props: JsonLdProductOfferFragment): Pick<Product, 'offers'> {
-  const { price_range } = props
+export function jsonLdProductOffer(props: Product): Pick<SchemaProduct, 'offers'> {
+  const { price } = props
 
   return {
     offers: {
       '@type': 'AggregateOffer',
       itemCondition: 'https://schema.org/NewCondition',
       offerCount: 1,
-      priceCurrency: price_range.minimum_price.regular_price.currency ?? undefined,
-      highPrice: price_range?.minimum_price?.regular_price.value ?? undefined,
-      lowPrice: price_range.minimum_price.final_price.value ?? undefined,
+      priceCurrency: price.currencyCode ?? undefined,
+      highPrice: price.retailPrice ?? undefined,
+      lowPrice: price.value ?? undefined,
     },
   }
 }

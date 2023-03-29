@@ -1,4 +1,5 @@
 export * from './ProductPagePrice.gql'
 export * from './ProductPagePriceTiers'
 export * from './ProductPagePrice'
+export * from './IserProductPagePrice'
 export * from './getProductTierPrice'

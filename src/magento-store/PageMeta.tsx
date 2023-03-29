@@ -14,7 +14,9 @@ type PageMetaProps = Pick<
 
 export function PageMeta(props: PageMetaProps) {
   const { children, title, ...pageMetaProps } = props
-  const config = useQuery(StoreConfigDocument)
+  // const config = useQuery(StoreConfigDocument)
+
+  const config = {}
 
   const prefix = config.data?.storeConfig?.title_prefix ?? ''
   const separator = config.data?.storeConfig?.title_separator ?? ''

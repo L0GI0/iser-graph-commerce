@@ -1,27 +1,27 @@
 import { PageMeta } from '@graphcommerce/magento-store'
 import { useCanonical } from '@graphcommerce/next-ui'
 import { useProductLink } from '../../hooks/useProductLink'
+import { useIserProductLink } from '@graphcommerce/magento-product/hooks/useIserProductLink'
 import { ProductPageMetaFragment } from './ProductPageMeta.gql'
+import { Product } from '@vercel/commerce/types/product'
 
-export function ProductPageMeta(props: ProductPageMetaFragment) {
+export function ProductPageMeta(props: Product) {
   const {
     sku,
-    categories,
-    price_range,
-    media_gallery,
+    price,
+    images,
     name,
-    meta_title,
-    meta_description,
-    url_key,
-    __typename,
+    description,
+    slug,
+    variants,
   } = props
-  const productLink = useProductLink({ url_key, __typename })
+  const productLink = useIserProductLink(slug)
   const canonical = useCanonical(productLink)
 
   return (
     <PageMeta
-      title={meta_title ?? name ?? ''}
-      metaDescription={meta_description ?? name ?? ''}
+      title={name ?? ''}
+      metaDescription={description ?? ''}
       canonical={productLink}
     >
       {sku && (
@@ -31,36 +31,36 @@ export function ProductPageMeta(props: ProductPageMetaFragment) {
         </>
       )}
       {name && <meta property='og:title' content={name} key='og-title' />}
-      {media_gallery?.[0]?.url && (
-        <meta property='og:image' content={media_gallery[0].url} key='og-image' />
+      {images?.[0]?.url && (
+        <meta property='og:image' content={images[0].url} key='og-image' />
       )}
-      {price_range?.minimum_price?.regular_price?.value && (
+      {price?.retailPrice && (
         <meta
           property='product:price:amount'
-          content={price_range.minimum_price.regular_price.value.toString()}
+          content={price?.retailPrice.toString()}
           key='og-price'
         />
       )}
-      {price_range?.minimum_price?.final_price?.value && (
+      {price?.value && (
         <meta
           property='product:sale_price:amount'
-          content={price_range.minimum_price.final_price.value.toString()}
+          content={price.value.toString()}
           key='og-sale-price'
         />
       )}
-      {price_range?.minimum_price?.final_price?.currency && (
+      {price?.currencyCode && (
         <meta
           property='product:price:currency'
-          content={price_range.minimum_price.final_price.currency}
+          content={price.currencyCode ?? 'EUR'}
           key='og-currency'
         />
       )}
-      {categories &&
+      {/* {categories &&
         categories.map((category) =>
           category?.name ? (
             <meta property='product:category' content={category.name} key={category.uid} />
           ) : null,
-        )}
+        )} */}
       {canonical && <meta property='og:url' content={canonical} key='og-url' />}
     </PageMeta>
   )

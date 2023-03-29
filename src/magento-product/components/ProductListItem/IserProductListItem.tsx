@@ -61,6 +61,8 @@ export type ProductListItemProps = BaseProps & Product & {
 
 const StyledImage = styled(Image)({})
 
+export const productRoute = import.meta.graphCommerce.productRoute ?? '/p/'
+
 export function IserProductListItem(props: ProductListItemProps) {
   const {
     subTitle,
@@ -70,6 +72,7 @@ export function IserProductListItem(props: ProductListItemProps) {
     bottomRight,
     images,
     name,
+    slug,
     price,
     children,
     imageOnly = false,
@@ -91,14 +94,14 @@ export function IserProductListItem(props: ProductListItemProps) {
   const image = images?.[0]
 
 
-  const productLink = '';
+  const productLink = `${productRoute}/${slug}`;
   const discount = 10;
 
   const formatter = useNumberFormat({ style: 'percent', maximumFractionDigits: 1 })
 
   return (
     <ButtonBase
-      href={name}
+      href={productLink}
       sx={[
         (theme) => ({
           display: 'block',

@@ -1,9 +1,10 @@
-import { Product } from 'schema-dts'
+import { Product as SchemaProduct } from 'schema-dts'
 import { JsonLdProductReviewFragment } from './JsonLdProductReview.gql'
+import { Product } from '@vercel/commerce/types/product'
 
 export function jsonLdProductReview(
-  props: JsonLdProductReviewFragment,
-): Pick<Product, 'aggregateRating' | 'review'> {
+  props: Product,
+): Pick<SchemaProduct, 'aggregateRating' | 'review'> {
   const { reviews, review_count, rating_summary } = props
 
   return {
