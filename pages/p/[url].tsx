@@ -25,6 +25,7 @@ import {
   ConfigurablePrice,
   ConfigurablePriceTiers,
   ConfigurableProductOptions,
+  ConfigurableIserProductOptions,
   ConfigurableProductPageGallery,
   ConfigurableIserProductPageGallery,
   defaultConfigurableOptionsSelection,
@@ -130,21 +131,21 @@ function ProductPage(props: Props) {
           </div>
 
           {/* {isTypename(product, ['ConfigurableProduct']) && ( */}
-            {/* <ConfigurableProductOptions
+            <ConfigurableIserProductOptions
               product={product}
               optionEndLabels={{
-                size: (
+                variant: (
                   <Link
                     href='/modal/product/global/size'
                     rel='nofollow'
                     color='primary'
                     underline='hover'
                   >
-                    <Trans id='Which size is right?' />
+                    <Trans id='Which is suitable for you?' />
                   </Link>
                 ),
               }}
-            /> */}
+            />
           {/* )} */}
           {/* {isTypename(product, ['BundleProduct']) && (
             <BundleProductOptions product={product} layout='stack' />
@@ -256,8 +257,6 @@ export const getStaticProps = async ({ params, locale, locales, preview }: GetSt
   const { categories } = await siteInfoPromise
   const { product } = await productPromise
   const { products: relatedProducts } = await allProductsPromise
-
-  console.log(`Product = ${JSON.stringify(product, null, 3)}`)
 
   // const client = graphqlSharedClient(locale)
   // const staticClient = graphqlSsrClient(locale)

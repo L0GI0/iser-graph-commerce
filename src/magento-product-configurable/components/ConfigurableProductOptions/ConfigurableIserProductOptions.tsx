@@ -6,21 +6,22 @@ import { SectionHeader, filterNonNullableKeys, ActionCardListProps } from '@grap
 import {
   ActionCardItemBase,
   ActionCardListForm,
-} from '@graphcommerce/next-ui/ActionCard/ActionCardListForm'
+  IserActionCardListForm
+} from '@graphcommerce/next-ui/ActionCard'
 import { i18n } from '@lingui/core'
 import { Alert, Box, SxProps, Theme } from '@mui/material'
 import { useRouter } from 'next/router'
 import React, { useEffect, useMemo } from 'react'
 import { ConfigurableOptionsFragment } from '../../graphql/ConfigurableOptions.gql'
 import { useConfigurableOptionsSelection } from '../../hooks'
-import { ConfigurableOptionValue } from '../ConfigurableOptionValue/ConfigurableOptionValue'
+import { IserConfigurableOptionValue } from '../ConfigurableOptionValue'
 import { ConfigurableOptionValueFragment } from '../ConfigurableOptionValue/ConfigurableOptionValue.gql'
-import { Product, ProductVariant } from '@vercel/commerce/types/product'
+import { Product, ProductVariant, ProductOption, ProductOptionValues } from '@vercel/commerce/types/product'
 
 export type ConfigurableIserProductOptionsProps = {
   optionEndLabels?: Record<string, React.ReactNode>
   sx?: SxProps<Theme>
-  render?: typeof ConfigurableOptionValue
+  render?: typeof IserConfigurableOptionValue
   product: Product
   index?: number
 } & Pick<ActionCardListProps, 'color' | 'variant' | 'size' | 'layout' | 'collapse'>
@@ -29,7 +30,7 @@ export function ConfigurableIserProductOptions(props: ConfigurableIserProductOpt
   const {
     optionEndLabels,
     sx,
-    render = ConfigurableOptionValue,
+    render = IserConfigurableOptionValue,
     product,
     index = 0,
     ...other
@@ -51,44 +52,44 @@ export function ConfigurableIserProductOptions(props: ConfigurableIserProductOpt
   //   [product.configurable_options],
   // )
 
-  const options = product.variants
+  const options = product.options
 
-  const { configured } = useConfigurableOptionsSelection({ url_key: product.url_key, index })
-  const unavailable =
-    configured &&
-    (configured?.configurable_product_options_selection?.options_available_for_selection ?? [])
-      .length === 0
+  // const { configured } = useConfigurableOptionsSelection({ url_key: product.slug, index })
+  // const unavailable =
+  //   configured &&
+  //   (configured?.configurable_product_options_selection?.options_available_for_selection ?? [])
+  //     .length === 0
 
   const allLabels = useMemo(() => {
     const formatter = new Intl.ListFormat(locale, { style: 'long', type: 'conjunction' })
-    return formatter.format(options.map((o) => o.label))
+    return formatter.format(options.map((o) => o.displayName))
   }, [locale, options])
 
-  useEffect(() => {
-    if (unavailable) {
-      setError(`cartItems.${index}.sku`, {
-        message: i18n._(/* i18n */ 'Product not available in {allLabels}', { allLabels }),
-      })
-    }
-    if (!unavailable) clearErrors(`cartItems.${index}.sku`)
-  }, [allLabels, clearErrors, index, setError, unavailable])
+  // useEffect(() => {
+  //   if (unavailable) {
+  //     setError(`cartItems.${index}.sku`, {
+  //       message: i18n._(/* i18n */ 'Product not available in {allLabels}', { allLabels }),
+  //     })
+  //   }
+  //   if (!unavailable) clearErrors(`cartItems.${index}.sku`)
+  // }, [allLabels, clearErrors, index, setError, unavailable])
 
   return (
     <Box sx={(theme) => ({ display: 'grid', rowGap: theme.spacings.sm })}>
       {options.map((option, idx) => {
-        const { values, label } = option
+        const { values, displayName } = option
         const fieldName = `cartItems.${index}.selected_options.${idx}` as const
 
         return (
           <Box key={fieldName} sx={sx}>
             <SectionHeader
-              labelLeft={label}
-              labelRight={optionEndLabels?.[option?.attribute_code ?? '']}
+              labelLeft={displayName}
+              labelRight={optionEndLabels?.['variant'] ?? ''}
               sx={{ mt: 0 }}
             />
 
-            <ActionCardListForm<
-              ActionCardItemBase & ConfigurableOptionValueFragment,
+            <IserActionCardListForm<
+              ProductOptionValues,
               AddProductsToCartMutationVariables
             >
               layout='grid'
@@ -99,7 +100,7 @@ export function ConfigurableIserProductOptions(props: ConfigurableIserProductOpt
               items={values}
               render={render}
               rules={{
-                required: i18n._(/* i18n*/ 'Please select a value for ‘{label}’', { label }),
+                required: i18n._(/* i18n*/ 'Please select a value for ‘{label}’', { displayName }),
               }}
             />
           </Box>
