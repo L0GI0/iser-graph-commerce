@@ -1,6 +1,7 @@
 import { PageOptions } from '@graphcommerce/framer-next-pages'
 import {
   AddProductsToCartButton,
+  AddIserProductsToCartButton,
   AddProductsToCartError,
   AddProductsToCartForm,
   AddIserProductsToCartForm,
@@ -181,7 +182,7 @@ function ProductPage(props: Props) {
             {/* <ProductPagePriceTiers product={product} /> */}
           {/* )} */}
 
-          {/* <ProductSidebarDelivery product={product} /> */}
+          <ProductSidebarDelivery product={product} />
 
           <Box
             sx={(theme) => ({
@@ -190,7 +191,7 @@ function ProductPage(props: Props) {
               columnGap: theme.spacings.xs,
             })}
           >
-            {/* <AddProductsToCartButton fullWidth product={product} /> */}
+            <AddIserProductsToCartButton fullWidth product={product} />
             <ProductWishlistChipDetail {...product} />
           </Box>
 

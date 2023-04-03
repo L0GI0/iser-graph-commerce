@@ -1,47 +1,46 @@
 import { MutationHookOptions, TypedDocumentNode, useMutation } from '@apollo/client'
 import { FieldValues, useForm, UseFormReturn } from 'react-hook-form'
-import { useFormGql, UseFormGqlMethods, UseFormGraphQlOptions } from './useFormGql'
+import { useIserFormGql, UseIserFormGqlMethods, UseIserFormGraphQlOptions } from './useIserFormGql'
 import { useFormMuiRegister, UseMuiFormRegister } from './useFormMuiRegister'
 import { useFormValidFields, UseFormValidReturn } from './useFormValidFields'
 
-export type UseFormGqlMutationReturn<
+export type UseIserFormGqlMutationReturn<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Q extends Record<string, any> = Record<string, any>,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   V extends FieldValues = FieldValues,
-> = UseFormGqlMethods<Q, V> &
+> = UseIserFormGqlMethods<Q, V> &
   UseFormReturn<V> & { muiRegister: UseMuiFormRegister<V>; valid: UseFormValidReturn<V> }
 
-export function isFormGqlOperation<
+export function isIserFormGqlOperation<
   V extends FieldValues,
   Q extends Record<string, unknown> = Record<string, unknown>,
->(form: UseFormReturn<V>): form is UseFormGqlMutationReturn<Q, V> {
-  return typeof (form as UseFormGqlMutationReturn<Q, V>).muiRegister === 'function'
+>(form: UseFormReturn<V>): form is UseIserFormGqlMutationReturn<Q, V> {
+  return typeof (form as UseIserFormGqlMutationReturn<Q, V>).muiRegister === 'function'
 }
 
-export function assertFormGqlOperation<
+export function assertIserFormGqlOperation<
   V extends FieldValues,
   Q extends Record<string, unknown> = Record<string, unknown>,
->(form: UseFormReturn<V>): asserts form is UseFormGqlMutationReturn<Q, V> {
-  if (typeof (form as UseFormGqlMutationReturn<Q, V>).muiRegister !== 'function') {
+>(form: UseFormReturn<V>): asserts form is UseIserFormGqlMutationReturn<Q, V> {
+  if (typeof (form as UseIserFormGqlMutationReturn<Q, V>).muiRegister !== 'function') {
     throw Error(`form must be one of 'useFromGqlMutation' or 'useFormGqlQuery'`)
   }
 }
 
 /** Bindings between react-hook-form's useForm and Apollo Client's useMutation hook. */
-export function useFormGqlMutation<Q extends Record<string, unknown>, V extends FieldValues>(
-  document: TypedDocumentNode<Q, V>,
-  options: UseFormGraphQlOptions<Q, V> = {},
+export function useIserFormGqlMutation<Q extends Record<string, unknown>, V extends FieldValues>(
+  options: UseIserFormGraphQlOptions<Q, V> = {},
   operationOptions?: MutationHookOptions<Q, V>,
-): UseFormGqlMutationReturn<Q, V> {
+): UseIserFormGqlMutationReturn<Q, V> {
   const form = useForm<V>(options)
   // const tuple = useMutation(document, operationOptions)
-  // const operation = useFormGql({ document, form, tuple, ...options })
+  const operation = useIserFormGql({ form, ...options })
   const muiRegister = useFormMuiRegister(form)
   // const valid = useFormValidFields(form, operation.required)
   // const valid = useFormValidFields(form, true)
 
 
   // return { ...form, ...operation, valid, muiRegister }
-  return { ...form, muiRegister }
+  return { ...form, ...operation, muiRegister }
 }

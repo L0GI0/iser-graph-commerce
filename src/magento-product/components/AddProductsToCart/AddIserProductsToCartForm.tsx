@@ -1,5 +1,5 @@
 import { UseFormGraphQlOptions } from '@graphcommerce/ecommerce-ui'
-import { useFormGqlMutationCart } from '@graphcommerce/magento-cart'
+import { useIserFormGqlMutationCart } from '@graphcommerce/magento-cart'
 import { ExtendableComponent } from '@graphcommerce/next-ui'
 import { Box, SxProps, Theme, useThemeProps } from '@mui/material'
 import { useRouter } from 'next/router'
@@ -58,13 +58,16 @@ export function AddIserProductsToCartForm(props: AddIserProductsToCartFormProps)
   if (typeof redirect !== 'undefined' && redirect !== 'added' && router.pathname === redirect)
     redirect = undefined
 
-  const form = useFormGqlMutationCart<
+  const form = useIserFormGqlMutationCart<
     AddProductsToCartMutation,
     AddProductsToCartMutationVariables
-  >(AddProductsToCartDocument, {
+  >({
     ...formProps,
     // We're stripping out incomplete entered options.
     onBeforeSubmit: async (variables) => {
+
+      console.log(`********************* AddIserProductsToCard - onBeforeSubmit()`)
+      
       const variables2 = (await formProps.onBeforeSubmit?.(variables)) ?? variables
       if (variables2 === false) return false
 
@@ -83,6 +86,8 @@ export function AddIserProductsToCartForm(props: AddIserProductsToCartFormProps)
     },
     onComplete: async (result, variables) => {
       await onComplete?.(result, variables)
+
+      console.log(`********************* AddIserProductsToCard - onComplete()`)
 
       // After the form has been submitted, we're resetting the submitted SKU's
       form.getValues('cartItems').forEach((item, index) => {
