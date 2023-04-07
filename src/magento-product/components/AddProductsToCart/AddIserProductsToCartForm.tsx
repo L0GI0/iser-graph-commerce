@@ -4,6 +4,7 @@ import { ExtendableComponent } from '@graphcommerce/next-ui'
 import { Box, SxProps, Theme, useThemeProps } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
+import { Product } from '@vercel/commerce/types/product'
 import {
   AddProductsToCartDocument,
   AddProductsToCartMutation,
@@ -15,6 +16,7 @@ import {
 } from './AddProductsToCartSnackbar'
 import { toUserErrors } from './toUserErrors'
 import { AddProductsToCartContext, RedirectType } from './useFormAddProductsToCart'
+import { getProductVariant, getProductVariantFromName } from '../helpers'
 
 export type AddIserProductsToCartFormProps = {
   // The props are actually used, but are passed through useThemeProps and that breaks react/no-unused-prop-types
@@ -23,7 +25,8 @@ export type AddIserProductsToCartFormProps = {
   // eslint-disable-next-line react/no-unused-prop-types
   sx?: SxProps<Theme>
   // eslint-disable-next-line react/no-unused-prop-types
-  redirect?: RedirectType
+  redirect?: RedirectType,
+  product: Product,
 } & UseFormGraphQlOptions<AddProductsToCartMutation, AddProductsToCartMutationVariables> &
   AddProductsToCartSnackbarProps
 
@@ -33,11 +36,27 @@ const name = 'AddProductsToCartForm'
 declare module '@mui/material/styles/components' {
   interface Components {
     AddProductsToCartForm?: Pick<
-      ExtendableComponent<Omit<AddIserProductsToCartFormProps, 'children'>>,
+      ExtendableComponent<Omit<AddIserProductsToCartFormProps, 'children' | 'product'>>,
       'defaultProps'
     >
   }
 }
+
+export type CartItemInputLocal = {
+  /** An array of entered options for the base product, such as personalization text */
+  entered_options?: Array<string>;
+  /** For child products, the SKU of its parent product */
+  parent_sku?: string;
+  quantity: number;
+  /** The selected options for the base product, such as color or size with  unique ID for a `CustomizableRadioOption`, `CustomizableDropDownOption`, `ConfigurableProductOptionsValues`, etc. objects */
+  selected_options?: Array<string>;
+  sku: string;
+};
+
+export type AddProductsToCartMutationVariablesLocal = {
+  cartId: string;
+  cartItems: Array<CartItemInputLocal>;
+};
 
 /**
  * Component that handles adding products to the cart. Used on the product page, but can be used for
@@ -51,7 +70,7 @@ declare module '@mui/material/styles/components' {
  * - Redirects the user to the cart/checkout/added page after successful submission.
  */
 export function AddIserProductsToCartForm(props: AddIserProductsToCartFormProps) {
-  let { children, redirect, onComplete, sx, errorSnackbar, successSnackbar, ...formProps } =
+  let { children, redirect, onComplete, sx, errorSnackbar, successSnackbar, product, ...formProps } =
     useThemeProps({ name, props })
   const router = useRouter()
 
@@ -71,18 +90,24 @@ export function AddIserProductsToCartForm(props: AddIserProductsToCartFormProps)
       const variables2 = (await formProps.onBeforeSubmit?.(variables)) ?? variables
       if (variables2 === false) return false
 
-      const { cartId, cartItems } = variables2
-      return {
-        cartId,
-        cartItems: cartItems
+
+      const { cartItems } = variables;
+
+       const cartItems2 =  cartItems
           .filter((cartItem) => cartItem.sku)
           .map((cartItem) => ({
             ...cartItem,
             quantity: cartItem.quantity || 1,
             selected_options: cartItem.selected_options?.filter(Boolean),
             entered_options: cartItem.entered_options?.filter((option) => option?.value),
-          })),
-      }
+          }))
+
+      const variant = getProductVariantFromName(product, cartItems2[0].selected_options as string[] | undefined);
+
+      console.log(`Variant = ${JSON.stringify(variant)}`)
+
+      return { variantId: variant.id, productId: product.id }
+
     },
     onComplete: async (result, variables) => {
       await onComplete?.(result, variables)

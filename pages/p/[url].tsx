@@ -68,7 +68,6 @@ import { IserProductPageGallery, ProductPageGalleryProps } from '@graphcommerce/
 // type Props = ProductPage2Query & Pick<AddProductsToCartFormProps, 'defaultValues'>
 type Props = { product: Product }
 
-
 type RouteProps = { url: string }
 type GetPageStaticPaths = GetStaticPaths<RouteProps>
 type GetPageStaticProps = GetStaticProps<LayoutNavigationProps, Props, RouteProps>
@@ -98,7 +97,7 @@ function ProductPage(props: Props) {
       />
       <ProductPageMeta {...product} />
 
-      <AddIserProductsToCartForm key={product.id} defaultValues={{}}>
+      <AddIserProductsToCartForm key={product.id} defaultValues={{}} product={product}>
         <IserProductPageGallery
           media_gallery={product.images}
           sx={(theme) => ({

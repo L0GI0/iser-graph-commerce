@@ -9,6 +9,8 @@ import { useEffect, useRef } from 'react'
 import { DefaultValues, FieldValues, UseFormProps, UseFormReturn } from 'react-hook-form'
 import diff from './diff'
 import { useGqlDocumentHandler, UseGqlDocumentHandler } from './useGqlDocumentHandler'
+import useAddItem from '@vercel/shopify/src/customer/address/use-add-item'
+
 
 export type OnIserCompleteFn<Q, V> = (data: FetchResult<Q>, variables: V) => void | Promise<void>
 
@@ -17,7 +19,7 @@ type UseFormGraphQLCallbacks<Q, V> = {
    * Allows you to modify the variablels computed by the form to make it compatible with the GraphQL
    * Mutation. Also allows you to send false to skip submission.
    */
-  onBeforeSubmit?: (variables: V) => V | false | Promise<V | false>
+  onBeforeSubmit?: (variables?: V) => V | false | Promise<V | false>
   onComplete?: OnIserCompleteFn<Q, V>
 }
 
@@ -29,6 +31,12 @@ export type UseIserFormGqlMethods<Q, V extends FieldValues> = Omit<
   'encode' | 'type'
 > &
   Pick<UseFormReturn<V>, 'handleSubmit'> & { data?: Q | null; error?: ApolloError }
+
+
+type ItemDetails = {
+  productId: string,
+  variantId: string
+}
 
 /**
  * Combines useMutation/useLazyQuery with react-hook-form's useForm:
@@ -51,6 +59,8 @@ export function useIserFormGql<Q, V extends FieldValues>(
   // const { encode, type, ...gqlDocumentHandler } = useGqlDocumentHandler<Q, V>(document)
   // const [execute, { data, error }] = tuple
 
+  const addItem = useAddItem()
+
   // automatically updates the default values
   const initital = useRef(true)
   const valuesString = JSON.stringify(defaultValues)
@@ -69,22 +79,32 @@ export function useIserFormGql<Q, V extends FieldValues>(
       // Combine defaults with the formValues and encode
       console.log(`HANDLE SUBMIT`)
       // let variables = encode({ ...defaultValues, ...formValues })
+      console.log(`formValues = ${JSON.stringify(formValues)}`)
 
-      // // Wait for the onBeforeSubmit to complete
-      // if (onBeforeSubmit) {
-      //   const res = await onBeforeSubmit(variables)
-      //   if (res === false) return
-      //   variables = res
-      // }
-      // // if (variables === false) onInvalid?.(formValues, event)
+      let itemDetails;
+
+      const variables = {
+        test: 'test'
+      }
+
+      // Wait for the onBeforeSubmit to complete
+      if (onBeforeSubmit) {
+        itemDetails = await onBeforeSubmit(formValues)
+        // if (res === false) return
+        // variables = res
+      }
+      if (!itemDetails) onInvalid?.(formValues, event)
+
+
 
       // const result = await execute({ variables })
+      await addItem(itemDetails)
       // if (onComplete && result.data) await onComplete(result, variables)
 
-      // // Reset the state of the form if it is unmodified afterwards
-      // if (typeof diff(form.getValues(), formValues) === 'undefined') form.reset(formValues)
+      // Reset the state of the form if it is unmodified afterwards
+      if (typeof diff(form.getValues(), formValues) === 'undefined') form.reset(formValues)
 
-      // await onValid(formValues, event)
+      await onValid(formValues, event)
     }, onInvalid)
 
   return { handleSubmit }

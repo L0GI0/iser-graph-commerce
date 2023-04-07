@@ -40,6 +40,10 @@ export function IserActionCardListForm<
   const RenderItem = render as React.FC<IserActionCardItemRenderProps<IserActionCardItemBase>>
 
   function onSelect(itemValue: unknown, selectValues: unknown) {
+
+    // console.log(`itemValue = ${JSON.stringify(itemValue)}`)
+    // console.log(`selectValues = ${JSON.stringify(selectValues)}`)
+
     return multiple
       ? Array.isArray(selectValues) && selectValues.some((selectValue) => selectValue === itemValue)
       : selectValues === itemValue
