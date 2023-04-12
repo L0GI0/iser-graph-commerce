@@ -106,7 +106,7 @@ export function AddIserProductsToCartForm(props: AddIserProductsToCartFormProps)
 
       console.log(`Variant = ${JSON.stringify(variant)}`)
 
-      return { variantId: variant.id, productId: product.id }
+      return { variantId: variant?.id ?? product.variants[0]?.id, productId: product.id, quantity: cartItems2[0].quantity }
 
     },
     onComplete: async (result, variables) => {

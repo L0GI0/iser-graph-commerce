@@ -4,6 +4,7 @@ import {
   ApolloCartErrorAlert,
   CartStartCheckout,
   CartStartCheckoutLinkOrButton,
+  IserCartStartCheckoutLinkOrButton,
   CartTotals,
   EmptyCart,
   useCartQuery,
@@ -24,6 +25,7 @@ import {
 import { i18n } from '@lingui/core'
 import { Trans } from '@lingui/react'
 import { Box, CircularProgress, Container } from '@mui/material'
+import useCart from '@vercel/commerce/cart/use-cart'
 import { LayoutOverlay, LayoutOverlayProps } from '../components'
 import { graphqlSharedClient } from '../lib/graphql/graphqlSsrClient'
 
@@ -31,32 +33,36 @@ type Props = Record<string, unknown>
 type GetPageStaticProps = GetStaticProps<LayoutOverlayProps, Props>
 
 function CartPage() {
-  const cart = useCartQuery(CartPageDocument, { returnPartialData: true, errorPolicy: 'all' })
-  const { data, error } = cart
-  const hasItems =
-    (data?.cart?.total_quantity ?? 0) > 0 &&
-    typeof data?.cart?.prices?.grand_total?.value !== 'undefined'
+  // const cart = useCartQuery(CartPageDocument, { returnPartialData: true, errorPolicy: 'all' })
+  // const { data, error } = cart
+  // const hasItems =
+  //   (data?.cart?.total_quantity ?? 0) > 0 &&
+  //   typeof data?.cart?.prices?.grand_total?.value !== 'undefined'
+
+  const { data, isLoading, isEmpty } = useCart()
+
+  console.log(`Cart data = ${data}`)
 
   return (
     <>
       <PageMeta
-        title={i18n._(/* i18n */ 'Cart ({0})', { 0: data?.cart?.total_quantity ?? 0 })}
+        title={i18n._(/* i18n */ 'Cart ({0})', { 0: data?.lineItems.length ?? 0 })}
         metaRobots={['noindex']}
       />
       <LayoutOverlayHeader
         switchPoint={0}
-        primary={<CartStartCheckoutLinkOrButton {...data?.cart} />}
+        primary={<IserCartStartCheckoutLinkOrButton cart={data} />}
         divider={
           <Container maxWidth='md'>
-            <Stepper currentStep={hasItems ? 1 : 0} steps={3} />
+            <Stepper currentStep={!isEmpty  ? 1 : 0} steps={3} />
           </Container>
         }
       >
-        <LayoutTitle size='small' component='span' icon={hasItems ? iconShoppingBag : undefined}>
-          {hasItems ? (
+        <LayoutTitle size='small' component='span' icon={!isEmpty ? iconShoppingBag : undefined}>
+          {!isEmpty  ? (
             <Trans
               id='Total <0/>'
-              components={{ 0: <Money {...data?.cart?.prices?.grand_total} /> }}
+              components={{ 0: <Money value={data?.totalPrice}/> }}
             />
           ) : (
             <Trans id='Cart' />
@@ -64,21 +70,21 @@ function CartPage() {
         </LayoutTitle>
       </LayoutOverlayHeader>
 
-      <WaitForQueries
+      {/* <WaitForQueries
         waitFor={cart}
         fallback={
           <FullPageMessage icon={<CircularProgress />} title={<Trans id='Loading' />}>
             <Trans id='This may take a second' />
           </FullPageMessage>
         }
-      >
+      > */}
         <Container maxWidth='md'>
           <>
-            {hasItems ? (
+            {!isEmpty ? (
               <Box sx={(theme) => ({ mt: theme.spacings.lg })}>
                 <CartItems
-                  items={data?.cart?.items}
-                  id={data?.cart?.id ?? ''}
+                  items={data?.lineItems}
+                  id={data?.id ?? ''}
                   key='cart'
                   renderer={{
                     BundleCartItem: CartItem,
@@ -95,15 +101,18 @@ function CartPage() {
                 <CartTotals containerMargin sx={{ typography: 'body1' }} />
                 <ApolloCartErrorAlert error={error} />
                 <Box key='checkout-button'>
-                  <CartStartCheckout {...data?.cart} />
+                  <CartStartCheckout {...data} />
                 </Box>
               </Box>
             ) : (
-              <EmptyCart>{error && <ApolloCartErrorAlert error={error} />}</EmptyCart>
+              <EmptyCart>
+                Empy cart error
+              </EmptyCart>
+              // <EmptyCart>{error && <ApolloCartErrorAlert error={error} />}</EmptyCart>
             )}
           </>
         </Container>
-      </WaitForQueries>
+      {/* </WaitForQueries> */}
     </>
   )
 }

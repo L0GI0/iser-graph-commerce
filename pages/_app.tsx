@@ -10,6 +10,7 @@ import { CssBaseline } from '@mui/material'
 import { AppProps } from 'next/app'
 import { lightTheme, darkTheme } from '../components/theme'
 import { I18nProvider } from '../lib/i18n/I18nProvider'
+import { CommerceProvider } from '@vercel/shopify/src'
 
 export default function ThemedApp(props: AppProps) {
   const { router } = props
@@ -18,6 +19,7 @@ export default function ThemedApp(props: AppProps) {
   return (
     <CssAndFramerMotionProvider>
       <I18nProvider key={locale} locale={locale}>
+        <CommerceProvider locale={locale}>
         {/* <GraphQLProvider {...props}> */}
           <DarkLightModeThemeProvider light={lightTheme} dark={darkTheme}>
             <GlobalHead />
@@ -25,6 +27,7 @@ export default function ThemedApp(props: AppProps) {
             <PageLoadIndicator />
             <FramerNextPages {...props} />
           </DarkLightModeThemeProvider>
+          </CommerceProvider>
         {/* </GraphQLProvider> */}
       </I18nProvider>
     </CssAndFramerMotionProvider>

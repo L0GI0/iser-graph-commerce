@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { Provider, useCommerce } from '..'
+import { Provider, useCommerce } from 'api/commerce'
 import type { MutationHook, PickRequired, SWRHook } from './types'
 import useData from './use-data'
 
@@ -34,6 +34,8 @@ export function useMutationHook<H extends MutationHook<any>>(
   hook: PickRequired<H, 'fetcher'>
 ) {
   const fetcher = useFetcher()
+
+  console.log(`*** Hook = ${JSON.stringify(hook)}`)
 
   return hook.useHook({
     fetch: useCallback(

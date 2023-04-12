@@ -1,7 +1,7 @@
 import {
   getCommerceProvider,
   useCommerce as useCoreCommerce,
-} from '@vercel/commerce'
+} from 'api/commerce/index'
 import { shopifyProvider, ShopifyProvider } from './provider'
 
 export { shopifyProvider }

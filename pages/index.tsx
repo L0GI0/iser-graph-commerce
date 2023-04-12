@@ -9,7 +9,7 @@ import { graphqlSharedClient, graphqlSsrClient } from '../lib/graphql/graphqlSsr
 import { ContainerWithHeader } from '@graphcommerce/next-ui'
 import { Link } from '@mui/material'
 import { RowHeroBanner } from 'components/GraphCMS/RowHeroBanner/RowHeroBanner'
-import commerce from 'api/commerce'
+import commerce from 'api/getCommerceApi'
 import { Product } from '@vercel/commerce/types/product'
 import { SimpleProductListItems } from '@graphcommerce/magento-product/components/ProductListItems/SimpleProductListItems'
 

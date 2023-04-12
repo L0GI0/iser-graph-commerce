@@ -58,12 +58,14 @@ import {
   Usps,
 } from '../../components'
 import { useRouter } from 'next/router'
-import commerce from '@vercel/commerce'
+import commerce from '@vercel/getCommerceApi'
 import { LayoutDocument } from '../../components/Layout/Layout.gql'
 import { ProductPage2Document, ProductPage2Query } from '../../graphql/ProductPage2.gql'
 import { graphqlSharedClient, graphqlSsrClient } from '../../lib/graphql/graphqlSsrClient'
 import { Product } from '@vercel/commerce/types/product'
 import { IserProductPageGallery, ProductPageGalleryProps } from '@graphcommerce/magento-product'
+import { CommerceProvider } from '@vercel/shopify/src'
+import { useAddItem } from '@vercel/shopify/src/cart'
 
 // type Props = ProductPage2Query & Pick<AddProductsToCartFormProps, 'defaultValues'>
 type Props = { product: Product }
@@ -74,7 +76,6 @@ type GetPageStaticProps = GetStaticProps<LayoutNavigationProps, Props, RouteProp
 
 function ProductPage(props: Props) {
   const { product } = props
-
 
   console.log(`PRODUCT PAGE!!!!!!!`)
 
@@ -96,7 +97,7 @@ function ProductPage(props: Props) {
         }}
       />
       <ProductPageMeta {...product} />
-
+        <CommerceProvider>
       <AddIserProductsToCartForm key={product.id} defaultValues={{}} product={product}>
         <IserProductPageGallery
           media_gallery={product.images}
@@ -197,7 +198,7 @@ function ProductPage(props: Props) {
           {/* <Usps usps={sidebarUsps} size='small' /> */}
         </IserProductPageGallery>
       </AddIserProductsToCartForm>
-
+      </CommerceProvider>
       {/* <ProductPageDescription {...product} right={<Usps usps={usps} />} fontSize='responsive' /> */}
 
       {/* {pages?.[0] && (

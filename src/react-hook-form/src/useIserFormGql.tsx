@@ -9,8 +9,7 @@ import { useEffect, useRef } from 'react'
 import { DefaultValues, FieldValues, UseFormProps, UseFormReturn } from 'react-hook-form'
 import diff from './diff'
 import { useGqlDocumentHandler, UseGqlDocumentHandler } from './useGqlDocumentHandler'
-import useAddItem from '@vercel/shopify/src/customer/address/use-add-item'
-
+import { useAddItem } from '@vercel/shopify/src/cart'
 
 export type OnIserCompleteFn<Q, V> = (data: FetchResult<Q>, variables: V) => void | Promise<void>
 
@@ -94,8 +93,6 @@ export function useIserFormGql<Q, V extends FieldValues>(
         // variables = res
       }
       if (!itemDetails) onInvalid?.(formValues, event)
-
-
 
       // const result = await execute({ variables })
       await addItem(itemDetails)

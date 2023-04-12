@@ -20,6 +20,8 @@ export const handler: MutationHook<AddItemHook> = {
     query: checkoutLineItemAddMutation,
   },
   async fetcher({ input: item, options, fetch }) {
+    console.log(`Adding item = ${JSON.stringify(item)}`)
+
     if (
       item.quantity &&
       (!Number.isInteger(item.quantity) || item.quantity! < 1)
