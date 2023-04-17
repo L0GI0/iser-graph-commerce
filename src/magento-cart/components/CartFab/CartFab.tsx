@@ -1,4 +1,6 @@
+import { useEffect } from 'react'
 import { WaitForQueries } from '@graphcommerce/ecommerce-ui'
+import { WaitForIserQueries } from '@graphcommerce/ecommerce-ui'
 import {
   extendableComponent,
   iconShoppingBag,
@@ -14,6 +16,8 @@ import React from 'react'
 import { useCartQuery } from '../../hooks/useCartQuery'
 import { CartFabDocument } from './CartFab.gql'
 import { CartTotalQuantityFragment } from './CartTotalQuantity.gql'
+import { useCart } from '@vercel/shopify/src/cart'
+import { LineItem } from '@vercel/commerce/types/cart'
 
 export type CartFabProps = {
   icon?: React.ReactNode
@@ -31,6 +35,8 @@ const MotionFab = m(
   )),
 )
 
+const countItem = (count: number, item: LineItem) => count + item.quantity
+
 const { classes } = extendableComponent('CartFab', ['root', 'cart', 'shadow'] as const)
 
 function CartFabContent(props: CartFabContentProps) {
@@ -46,6 +52,8 @@ function CartFabContent(props: CartFabContentProps) {
 
   const cartIcon = icon ?? <IconSvg src={iconShoppingBag} size='large' />
   const fabIconSize = useFabSize('responsive')
+
+
 
   return (
     <Box
@@ -110,14 +118,24 @@ function CartFabContent(props: CartFabContentProps) {
  * product to the cart. This would mean that it would immediately start executing this query.
  */
 export function CartFab(props: CartFabProps) {
-  const cartQuery = useCartQuery(CartFabDocument, {
-    fetchPolicy: 'cache-only',
-    nextFetchPolicy: 'cache-first',
-  })
+  // const cartQuery = useCartQuery(CartFabDocument, {
+  //   fetchPolicy: 'cache-only',
+  //   nextFetchPolicy: 'cache-first',
+  // })
 
+  const { data, isLoading } = useCart()
+  const itemsCount = data?.lineItems?.reduce(countItem, 0) ?? 0
+
+  useEffect(() => {
+    console.log(`isLoding = ${isLoading}`)
+  }, [isLoading])
+
+  const fallback = <CartFabContent {...props} total_quantity={0}/>
+
+  /* use something like <WaitForQueries> */
   return (
-    <WaitForQueries waitFor={cartQuery} fallback={<CartFabContent {...props} total_quantity={0} />}>
-      <CartFabContent total_quantity={cartQuery.data?.cart?.total_quantity ?? 0} {...props} />
-    </WaitForQueries>
+    <WaitForIserQueries isLoading={isLoading} fallback={<CartFabContent {...props} total_quantity={0} />}>
+      <CartFabContent total_quantity={itemsCount ?? 0} {...props} />
+    </WaitForIserQueries>
   )
 }

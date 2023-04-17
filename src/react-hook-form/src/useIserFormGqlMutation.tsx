@@ -30,13 +30,14 @@ export function assertIserFormGqlOperation<
 
 /** Bindings between react-hook-form's useForm and Apollo Client's useMutation hook. */
 export function useIserFormGqlMutation<Q extends Record<string, unknown>, V extends FieldValues>(
+  action: any,
   options: UseIserFormGraphQlOptions<Q, V> = {},
   operationOptions?: MutationHookOptions<Q, V>,
 ): UseIserFormGqlMutationReturn<Q, V> {
   const form = useForm<V>(options)
   // const tuple = useMutation(document, operationOptions)
 
-  const operation = useIserFormGql({ form, ...options })
+  const operation = useIserFormGql(action, { form, ...options })
   const muiRegister = useFormMuiRegister(form)
   // const valid = useFormValidFields(form, operation.required)
   // const valid = useFormValidFields(form, true)

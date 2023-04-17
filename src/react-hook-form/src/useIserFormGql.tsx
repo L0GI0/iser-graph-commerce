@@ -46,6 +46,7 @@ type ItemDetails = {
  * - Resets the form after submitting the form when no modifications are found
  */
 export function useIserFormGql<Q, V extends FieldValues>(
+  action: any,
   options: {
     // document: TypedDocumentNode<Q, V>
     form: UseFormReturn<V>
@@ -57,8 +58,6 @@ export function useIserFormGql<Q, V extends FieldValues>(
   const { onComplete, onBeforeSubmit, form, defaultValues } = options
   // const { encode, type, ...gqlDocumentHandler } = useGqlDocumentHandler<Q, V>(document)
   // const [execute, { data, error }] = tuple
-
-  const addItem = useAddItem()
 
   // automatically updates the default values
   const initital = useRef(true)
@@ -76,26 +75,27 @@ export function useIserFormGql<Q, V extends FieldValues>(
   const handleSubmit: UseFormReturn<V>['handleSubmit'] = (onValid, onInvalid) =>
     form.handleSubmit(async (formValues, event) => {
       // Combine defaults with the formValues and encode
-      console.log(`HANDLE SUBMIT`)
       // let variables = encode({ ...defaultValues, ...formValues })
       console.log(`formValues = ${JSON.stringify(formValues)}`)
+      console.log(`defaultValues = ${JSON.stringify(defaultValues)}`)
 
-      let itemDetails;
+      let variables = {...defaultValues, ...formValues };
 
-      const variables = {
-        test: 'test'
-      }
+      // const variables = {
+      //   test: 'test'
+      // }
 
       // Wait for the onBeforeSubmit to complete
       if (onBeforeSubmit) {
-        itemDetails = await onBeforeSubmit(formValues)
+        variables = await onBeforeSubmit(formValues)
         // if (res === false) return
         // variables = res
       }
-      if (!itemDetails) onInvalid?.(formValues, event)
-
+      if (!variables) onInvalid?.(formValues, event)
+      
       // const result = await execute({ variables })
-      await addItem(itemDetails)
+      console.log(`action(${JSON.stringify(variables)})`)
+      await action(variables)
       // if (onComplete && result.data) await onComplete(result, variables)
 
       // Reset the state of the form if it is unmodified afterwards

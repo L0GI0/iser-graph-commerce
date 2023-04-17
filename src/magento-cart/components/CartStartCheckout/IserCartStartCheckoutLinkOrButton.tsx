@@ -24,7 +24,7 @@ export function IserCartStartCheckoutLinkOrButton(props: IserCartStartCheckoutLi
     cart
   } = props
 
-  const hasTotals = (cart.totalPrice ?? 0) > 0
+  const hasTotals = (cart?.totalPrice ?? 0) > 0
   // const hasErrors = cart.items?.some((item) => (item?.errors?.length ?? 0) > 0)
 
   return (

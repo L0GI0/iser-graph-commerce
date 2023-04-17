@@ -35,8 +35,6 @@ export function useMutationHook<H extends MutationHook<any>>(
 ) {
   const fetcher = useFetcher()
 
-  console.log(`*** Hook = ${JSON.stringify(hook)}`)
-
   return hook.useHook({
     fetch: useCallback(
       ({ input } = {}) => {

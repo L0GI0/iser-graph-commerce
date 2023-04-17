@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { WaitForQueries } from '@graphcommerce/ecommerce-ui'
 import { PageOptions } from '@graphcommerce/framer-next-pages'
 import {
@@ -11,7 +12,7 @@ import {
 } from '@graphcommerce/magento-cart'
 import { CartPageDocument } from '@graphcommerce/magento-cart-checkout'
 import { CouponAccordion } from '@graphcommerce/magento-cart-coupon'
-import { CartItem, CartItems } from '@graphcommerce/magento-cart-items'
+import { CartItem, CartItems, IserCartItems } from '@graphcommerce/magento-cart-items'
 import { ConfigurableCartItem } from '@graphcommerce/magento-product-configurable'
 import { Money, PageMeta, StoreConfigDocument } from '@graphcommerce/magento-store'
 import {
@@ -28,6 +29,7 @@ import { Box, CircularProgress, Container } from '@mui/material'
 import useCart from '@vercel/commerce/cart/use-cart'
 import { LayoutOverlay, LayoutOverlayProps } from '../components'
 import { graphqlSharedClient } from '../lib/graphql/graphqlSsrClient'
+import { Button } from '@graphcommerce/next-ui'
 
 type Props = Record<string, unknown>
 type GetPageStaticProps = GetStaticProps<LayoutOverlayProps, Props>
@@ -41,7 +43,17 @@ function CartPage() {
 
   const { data, isLoading, isEmpty } = useCart()
 
-  console.log(`Cart data = ${data}`)
+  useEffect(() => {
+    console.log(`Cart data = ${JSON.stringify(data)}`);
+    console.log(`Is empty = ${isEmpty}`)
+  }, [isLoading, isEmpty])
+
+  const isLoadingTest = true;
+  
+  const fallback = 
+    <FullPageMessage icon={<CircularProgress />} title={<Trans id='Loading' />}>
+      <Trans id='This may take a second' />
+    </FullPageMessage>
 
   return (
     <>
@@ -78,28 +90,20 @@ function CartPage() {
           </FullPageMessage>
         }
       > */}
+      { isLoading ? fallback :
         <Container maxWidth='md'>
           <>
             {!isEmpty ? (
               <Box sx={(theme) => ({ mt: theme.spacings.lg })}>
-                <CartItems
-                  items={data?.lineItems}
-                  id={data?.id ?? ''}
+                <IserCartItems
+                  items={data?.lineItems ?? []}
+                  currencyCode={data?.currency.code ?? 'EUR'}
+                  // id={data?.id ?? ''}
                   key='cart'
-                  renderer={{
-                    BundleCartItem: CartItem,
-                    ConfigurableCartItem,
-                    DownloadableCartItem: CartItem,
-                    SimpleCartItem: CartItem,
-                    VirtualCartItem: CartItem,
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore GiftCardProduct is only available in Commerce
-                    GiftCardCartItem: CartItem,
-                  }}
                 />
                 <CouponAccordion key='couponform' />
                 <CartTotals containerMargin sx={{ typography: 'body1' }} />
-                <ApolloCartErrorAlert error={error} />
+                {/* <ApolloCartErrorAlert error={error} /> */}
                 <Box key='checkout-button'>
                   <CartStartCheckout {...data} />
                 </Box>
@@ -107,12 +111,14 @@ function CartPage() {
             ) : (
               <EmptyCart>
                 Empy cart error
+                <Button onClick={() => console.log(`button clicked`)}>Button</Button>
               </EmptyCart>
+              
               // <EmptyCart>{error && <ApolloCartErrorAlert error={error} />}</EmptyCart>
             )}
           </>
         </Container>
-      {/* </WaitForQueries> */}
+      }
     </>
   )
 }
@@ -127,12 +133,9 @@ CartPage.pageOptions = pageOptions
 export default CartPage
 
 export const getStaticProps: GetPageStaticProps = async ({ locale }) => {
-  const client = graphqlSharedClient(locale)
-  const conf = client.query({ query: StoreConfigDocument })
 
   return {
     props: {
-      apolloState: await conf.then(() => client.cache.extract()),
     },
   }
 }

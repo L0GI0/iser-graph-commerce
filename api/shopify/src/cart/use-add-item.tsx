@@ -41,6 +41,7 @@ export const handler: MutationHook<AddItemHook> = {
     let checkoutId = getCheckoutId()
 
     if (!checkoutId) {
+      console.log(`CREATING CHECKOUT`)
       return checkoutToCart(await checkoutCreate(fetch, lineItems))
     } else {
       const { checkoutLineItemsAdd } = await fetch<

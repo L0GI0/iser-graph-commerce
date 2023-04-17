@@ -25,8 +25,6 @@ function CmsPage(props: Props) {
 
   const { products } = props;
 
-  console.log(`Products = ${JSON.stringify(products, null, 3)}`)
-
   // const latest = latestList?.products?.items?.[0]
   // const favorite = favoritesList?.products?.items?.[0]
   // const swipable = swipableList?.products?.items?.[0]

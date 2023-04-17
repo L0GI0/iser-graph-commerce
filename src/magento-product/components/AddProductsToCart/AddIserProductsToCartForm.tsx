@@ -17,6 +17,8 @@ import {
 import { toUserErrors } from './toUserErrors'
 import { AddProductsToCartContext, RedirectType } from './useFormAddProductsToCart'
 import { getProductVariant, getProductVariantFromName } from '../helpers'
+import { useAddItem } from '@vercel/shopify/src/cart'
+
 
 export type AddIserProductsToCartFormProps = {
   // The props are actually used, but are passed through useThemeProps and that breaks react/no-unused-prop-types
@@ -74,13 +76,16 @@ export function AddIserProductsToCartForm(props: AddIserProductsToCartFormProps)
     useThemeProps({ name, props })
   const router = useRouter()
 
+  const addItem = useAddItem()
+
   if (typeof redirect !== 'undefined' && redirect !== 'added' && router.pathname === redirect)
     redirect = undefined
 
   const form = useIserFormGqlMutationCart<
     AddProductsToCartMutation,
     AddProductsToCartMutationVariables
-  >({
+  >(addItem,
+    {
     ...formProps,
     // We're stripping out incomplete entered options.
     onBeforeSubmit: async (variables) => {

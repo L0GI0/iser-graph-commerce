@@ -50,11 +50,12 @@ export const handler = {
   useHook:
     ({ fetch }: MutationHookContext<RemoveItemHook>) =>
     <T extends LineItem | undefined = undefined>(ctx: { item?: T } = {}) => {
+      console.log(`***** CTX = ${JSON.stringify(ctx)}`)
       const { item } = ctx
       const { mutate } = useCart()
       const removeItem: RemoveItemFn<LineItem> = async (input) => {
         const itemId = input?.id ?? item?.id
-
+        console.log(`itemId = ${itemId}`)
         if (!itemId) {
           throw new ValidationError({
             message: 'Invalid input used for this operation',

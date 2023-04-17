@@ -9,7 +9,6 @@ const fetchGraphqlApi: GraphQLFetcher = async (
   options?: FetchOptions
 ) => {
   try {
-    console.log(`query = ${query}`)
     const res = await fetch(API_URL, {
       method: options?.method || 'POST',
       headers: {
@@ -27,7 +26,6 @@ const fetchGraphqlApi: GraphQLFetcher = async (
     const { data, errors, status } = await res.json()
 
     if (errors) {
-      console.log(`Errors = ${errors}`)
       throw getError(errors, status)
     }
 

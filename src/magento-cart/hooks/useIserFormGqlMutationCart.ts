@@ -11,6 +11,7 @@ export function useIserFormGqlMutationCart<
   Q extends Record<string, any>,
   V extends { cartId: string; [index: string]: unknown },
 >(
+  action: any,
   options: UseFormGraphQlOptions<Q, V> = {},
   operationOptions?: MutationHookOptions<Q, V>,
 ): UseFormGqlMutationReturn<Q, V> {
@@ -22,6 +23,7 @@ export function useIserFormGqlMutationCart<
     return options.onBeforeSubmit ? options.onBeforeSubmit(vars) : vars
   }
   const result = useIserFormGqlMutation<Q, V>(
+    action,
     { ...options, onBeforeSubmit },
     { errorPolicy: 'all', ...operationOptions },
   )
