@@ -33,6 +33,12 @@ const useData: UseData = (options, input, fetcherFn, swrOptions) => {
     method?: string,
     ...args: any[]
   ) => {
+    console.log(
+      `useData() url = ${url} | query = ${query} | method = ${method}\n
+       swrOptions = ${JSON.stringify(swrOptions)}
+      `
+    )
+
     try {
       return await options.fetcher({
         options: { url, query, method },
@@ -54,6 +60,9 @@ const useData: UseData = (options, input, fetcherFn, swrOptions) => {
   }
   const response = useSWR(
     () => {
+      console.log(
+        `options.fetchOptions = ${JSON.stringify(options.fetchOptions)}`
+      )
       const opts = options.fetchOptions
       return opts
         ? [opts.url, opts.query, opts.method, ...hookInput.map((e) => e[1])]

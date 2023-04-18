@@ -26,10 +26,11 @@ import {
 import { i18n } from '@lingui/core'
 import { Trans } from '@lingui/react'
 import { Box, CircularProgress, Container } from '@mui/material'
-import useCart from '@vercel/commerce/cart/use-cart'
+// import useCart from '@vercel/commerce/cart/use-cart'
 import { LayoutOverlay, LayoutOverlayProps } from '../components'
 import { graphqlSharedClient } from '../lib/graphql/graphqlSsrClient'
 import { Button } from '@graphcommerce/next-ui'
+import useCart from '@vercel/shopify/src/cart/use-cart'
 
 type Props = Record<string, unknown>
 type GetPageStaticProps = GetStaticProps<LayoutOverlayProps, Props>

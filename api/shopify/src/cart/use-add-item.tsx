@@ -54,6 +54,7 @@ export const handler: MutationHook<AddItemHook> = {
           lineItems,
         },
       })
+      console.log(`return checkoutToCart(checkoutLineItemsAdd)`)
       return checkoutToCart(checkoutLineItemsAdd)
     }
   },

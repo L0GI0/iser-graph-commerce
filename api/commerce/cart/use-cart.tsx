@@ -18,13 +18,15 @@ export const fetcher: HookFetcherFn<GetCartHook> = async ({
 const fn = (provider: Provider) => provider.cart?.useCart!
 
 const useCart: UseCart = (input) => {
-  const hook = useHook(fn)
+  const hook = useHook(fn) // hook is useCart object
   const { cartCookie } = useCommerce()
   console.log(`Cart cookie = ${cartCookie}`)
-  const fetcherFn = hook.fetcher ?? fetcher
+  const fetcherFn = hook.fetcher ?? fetcher // uses handler.fetcher
+  // wraps fetcher into a wrapper
   const wrapper: typeof fetcher = (context) => {
     context.input.cartId = Cookies.get(cartCookie)
     console.log(`context.input.cartId = ${context.input.cartId}`)
+    console.log(`CONTEXT = ${JSON.stringify(context)}`)
     return fetcherFn(context)
   }
   return useSWRHook({ ...hook, fetcher: wrapper })(input)
