@@ -35,6 +35,7 @@ import { i18n } from '@lingui/core'
 import { Trans } from '@lingui/react'
 import { CircularProgress, Container, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
+import { WaitForIserQueries } from '@graphcommerce/ecommerce-ui'
 import { LayoutMinimal, LayoutMinimalProps } from '../../components'
 import { LayoutDocument } from '../../components/Layout/Layout.gql'
 import { DefaultPageDocument } from '../../graphql/DefaultPage.gql'
@@ -45,27 +46,28 @@ type GetPageStaticProps = GetStaticProps<LayoutMinimalProps, Props>
 
 function ShippingPage() {
   const router = useRouter()
-  const shippingPage = useCartQuery(ShippingPageDocument, { fetchPolicy: 'cache-and-network' })
-  const customerAddresses = useCustomerQuery(CustomerDocument, { fetchPolicy: 'cache-and-network' })
+  // const shippingPage = useCartQuery(ShippingPageDocument, { fetchPolicy: 'cache-and-network' })
+  // const customerAddresses = useCustomerQuery(CustomerDocument, { fetchPolicy: 'cache-and-network' })
 
-  const cartExists =
-    typeof shippingPage.data?.cart !== 'undefined' &&
-    (shippingPage.data.cart?.items?.length ?? 0) > 0
+  // const cartExists =
+  //   typeof shippingPage.data?.cart !== 'undefined' &&
+  //   (shippingPage.data.cart?.items?.length ?? 0) > 0
+  
 
   return (
     <>
       <PageMeta title={i18n._(/* i18n */ 'Shipping')} metaRobots={['noindex']} />
-      <WaitForQueries
-        waitFor={[shippingPage, customerAddresses]}
+      <WaitForIserQueries
+        isLoading={false}
         fallback={
           <FullPageMessage icon={<CircularProgress />} title={<Trans id='Loading' />}>
             <Trans id='This may take a second' />
           </FullPageMessage>
         }
       >
-        {shippingPage.error && <ApolloCartErrorFullPage error={shippingPage.error} />}
+        {/* {shippingPage.error && <ApolloCartErrorFullPage error={shippingPage.error} />}
         {!shippingPage.error && !cartExists && <EmptyCart />}
-        {!shippingPage.error && cartExists && (
+        {!shippingPage.error && cartExists && ( */}
           <ComposedForm>
             <LayoutHeader
               switchPoint={0}
@@ -84,23 +86,23 @@ function ShippingPage() {
                 </Container>
               }
             >
-              {shippingPage.data?.cart?.is_virtual ? (
+              {/* {shippingPage.data?.cart?.is_virtual ? (
                 <LayoutTitle size='small' icon={iconAddresses}>
                   <Trans id='Billing address' />
                 </LayoutTitle>
-              ) : (
+              ) : ( */}
                 <LayoutTitle size='small' icon={iconBox}>
                   <Trans id='Shipping' />
                 </LayoutTitle>
-              )}
+              {/* )} */}
             </LayoutHeader>
             <Container maxWidth='md'>
               <>
-                {(customerAddresses.data?.customer?.addresses?.length ?? 0) >= 1 ? (
+                {/* {(customerAddresses.data?.customer?.addresses?.length ?? 0) >= 1 ? (
                   <CustomerAddressForm step={2} sx={(theme) => ({ mt: theme.spacings.lg })}>
                     <ShippingAddressForm ignoreCache step={3} />
                   </CustomerAddressForm>
-                ) : (
+                ) : ( */}
                   <>
                     <Typography
                       variant='h4'
@@ -112,11 +114,12 @@ function ShippingPage() {
                     <EmailForm step={1} />
                     <ShippingAddressForm step={3} />
                   </>
-                )}
+                {/* )} */}
 
-                {!shippingPage.data?.cart?.is_virtual && (
+                {/* {!shippingPage.data?.cart?.is_virtual && (
                   <ShippingMethodForm step={4} sx={(theme) => ({ mt: theme.spacings.lg })} />
-                )}
+                )} */}
+                  <ShippingMethodForm step={4} sx={(theme) => ({ mt: theme.spacings.lg })} />
 
                 <ComposedSubmit
                   onSubmitSuccessful={() => router.push('/checkout/payment')}
@@ -136,8 +139,8 @@ function ShippingPage() {
               </>
             </Container>
           </ComposedForm>
-        )}
-      </WaitForQueries>
+        {/* )} */}
+      </WaitForIserQueries>
     </>
   )
 }
@@ -151,19 +154,19 @@ ShippingPage.pageOptions = pageOptions
 export default ShippingPage
 
 export const getStaticProps: GetPageStaticProps = async ({ locale }) => {
-  const client = graphqlSharedClient(locale)
-  const conf = client.query({ query: StoreConfigDocument })
-  const staticClient = graphqlSsrClient(locale)
+  // const client = graphqlSharedClient(locale)
+  // const conf = client.query({ query: StoreConfigDocument })
+  // const staticClient = graphqlSsrClient(locale)
 
-  const page = staticClient.query({ query: DefaultPageDocument, variables: { url: `checkout` } })
-  const layout = staticClient.query({ query: LayoutDocument })
+  // const page = staticClient.query({ query: DefaultPageDocument, variables: { url: `checkout` } })
+  // const layout = staticClient.query({ query: LayoutDocument })
 
   return {
     props: {
-      ...(await page).data,
-      ...(await layout).data,
+      // ...(await page).data,
+      // ...(await layout).data,
       up: { href: '/cart', title: 'Cart' },
-      apolloState: await conf.then(() => client.cache.extract()),
+      // apolloState: await conf.then(() => client.cache.extract()),
     },
   }
 }

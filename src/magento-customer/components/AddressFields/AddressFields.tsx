@@ -9,6 +9,7 @@ import {
 } from '@graphcommerce/react-hook-form'
 import { i18n } from '@lingui/core'
 import { Trans } from '@lingui/react'
+import { countries } from './countries';
 import React, { useMemo } from 'react'
 
 export type AddressFieldValues = {
@@ -27,8 +28,8 @@ export type AddressFieldsProps = { form: UseFormReturn<any>; readOnly?: boolean 
 export function AddressFields(props: AddressFieldsProps) {
   const { form, readOnly } = props
 
-  const countryQuery = useQuery(CountryRegionsDocument, { fetchPolicy: 'cache-and-network' })
-  const countries = countryQuery.data?.countries ?? countryQuery.previousData?.countries
+  // const countryQuery = useQuery(CountryRegionsDocument, { fetchPolicy: 'cache-and-network' })
+  // const countries = countryQuery.data?.countries ?? countryQuery.previousData?.countries
 
   assertFormGqlOperation<AddressFieldValues>(form)
   const { watch, required, valid, control } = form
@@ -60,7 +61,7 @@ export function AddressFields(props: AddressFieldsProps) {
         <TextFieldElement
           variant='outlined'
           control={control}
-          required={required.street}
+          required={true}
           name='street'
           type='text'
           label={<Trans id='Street' />}
@@ -73,7 +74,7 @@ export function AddressFields(props: AddressFieldsProps) {
         <TextFieldElement
           control={control}
           name='houseNumber'
-          required={required.houseNumber}
+          required={true}
           validation={{
             pattern: {
               value: houseNumberPattern,
@@ -94,7 +95,7 @@ export function AddressFields(props: AddressFieldsProps) {
           name='addition'
           variant='outlined'
           type='text'
-          required={required.addition}
+          required={true}
           label={<Trans id='Addition' />}
           autoComplete='address-line3'
           InputProps={{
@@ -109,7 +110,7 @@ export function AddressFields(props: AddressFieldsProps) {
           name='postcode'
           variant='outlined'
           type='text'
-          required={required.postcode}
+          required={true}
           label={<Trans id='Postcode' />}
           InputProps={{
             readOnly,
@@ -121,7 +122,7 @@ export function AddressFields(props: AddressFieldsProps) {
           name='city'
           variant='outlined'
           type='text'
-          required={required.city}
+          required={true}
           label={<Trans id='City' />}
           InputProps={{
             readOnly,
@@ -136,7 +137,7 @@ export function AddressFields(props: AddressFieldsProps) {
           SelectProps={{ autoWidth: true }}
           variant='outlined'
           label={<Trans id='Country' />}
-          required={required.countryCode}
+          required={true}
           InputProps={{
             readOnly,
             endAdornment: <InputCheckmark show={valid.countryCode} select />,

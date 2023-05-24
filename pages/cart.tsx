@@ -49,8 +49,6 @@ function CartPage() {
     console.log(`Is empty = ${isEmpty}`)
   }, [isLoading, isEmpty])
 
-  const isLoadingTest = true;
-  
   const fallback = 
     <FullPageMessage icon={<CircularProgress />} title={<Trans id='Loading' />}>
       <Trans id='This may take a second' />

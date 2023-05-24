@@ -20,10 +20,7 @@ export const handler: SWRHook<GetCartHook> = {
     query: getCheckoutQuery,
   },
   async fetcher({ input: { cartId }, options, fetch }) {
-    console.log(`*** Cart id = ${cartId}`)
     if (cartId) {
-      console.log(`const { node: checkout } = await fetch`)
-      console.log(`Options = ${JSON.stringify(options)}`)
       const { node: checkout } = await fetch({
         ...options,
         variables: {
@@ -31,21 +28,16 @@ export const handler: SWRHook<GetCartHook> = {
         },
       })
 
-      console.log(`After cart fetch`)
-
       if (checkout?.completedAt) {
-        console.log(`REMOVING CACHE`)
         Cookies.remove(SHOPIFY_CHECKOUT_ID_COOKIE)
         Cookies.remove(SHOPIFY_CHECKOUT_URL_COOKIE)
         return null
       } else {
-        console.log(`To checkout cart----`)
         return checkoutToCart({
           checkout,
         })
       }
     }
-    console.log(`Returning null!!!`)
     return null
   },
   useHook:

@@ -40,9 +40,9 @@ export function useIserFormGqlMutation<Q extends Record<string, unknown>, V exte
   const operation = useIserFormGql(action, { form, ...options })
   const muiRegister = useFormMuiRegister(form)
   // const valid = useFormValidFields(form, operation.required)
-  // const valid = useFormValidFields(form, true)
+  const valid = useFormValidFields(form, options.defaultValues)
 
 
   // return { ...form, ...operation, valid, muiRegister }
-  return { ...form, ...operation, muiRegister }
+  return { ...form, ...operation, muiRegister, valid }
 }

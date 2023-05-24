@@ -41,8 +41,8 @@ import { graphqlSsrClient, graphqlSharedClient } from '../../lib/graphql/graphql
 type GetPageStaticProps = GetStaticProps<LayoutMinimalProps>
 
 function PaymentPage() {
-  const billingPage = useCartQuery(BillingPageDocument, { fetchPolicy: 'cache-and-network' })
-  const [{ locked }] = useCartLock()
+  // const billingPage = useCartQuery(BillingPageDocument, { fetchPolicy: 'cache-and-network' })
+  // const [{ locked }] = useCartLock()
 
   const cartExists =
     typeof billingPage.data?.cart !== 'undefined' && (billingPage.data.cart?.items?.length ?? 0) > 0

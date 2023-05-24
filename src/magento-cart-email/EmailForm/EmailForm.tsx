@@ -18,6 +18,7 @@ import { TextField, Button, SxProps, Box, Theme } from '@mui/material'
 import React from 'react'
 import { CartEmailDocument } from './CartEmail.gql'
 import { SetGuestEmailOnCartDocument } from './SetGuestEmailOnCart.gql'
+import { useIserFormGqlMutationCart } from '@graphcommerce/magento-cart'
 
 export type EmailFormProps = Pick<UseFormComposeOptions, 'step'> & {
   children?: React.ReactNode
@@ -31,19 +32,19 @@ const { classes } = extendableComponent(name, parts)
 const EmailFormBase = React.memo<EmailFormProps>((props) => {
   const { step, sx } = props
 
-  const cartEmail = useCartQuery(CartEmailDocument, { hydration: true })
+  // const cartEmail = useCartQuery(CartEmailDocument, { hydration: true })
 
-  const email = cartEmail.data?.cart?.email ?? ''
+  // const email = cartEmail.data?.cart?.email ?? ''
 
-  const form = useFormGqlMutationCart(SetGuestEmailOnCartDocument, {
+  const form = useIserFormGqlMutationCart(() => {}, {
     mode: 'onChange',
-    defaultValues: { email },
+    defaultValues: { email: '' },
   })
 
-  const isEmailAvailable = useQuery(IsEmailAvailableDocument, {
-    variables: { email },
-    skip: !email,
-  })
+  // const isEmailAvailable = useQuery(IsEmailAvailableDocument, {
+  //   variables: { email },
+  //   skip: !email,
+  // })
 
   const { formState, muiRegister, required, error, handleSubmit } = form
   const submit = handleSubmit(() => {})
@@ -60,24 +61,23 @@ const EmailFormBase = React.memo<EmailFormProps>((props) => {
           error={formState.isSubmitted && !!formState.errors.email}
           helperText={formState.isSubmitted && formState.errors.email?.message}
           label={<Trans id='Email' />}
-          required={required.email}
-          disabled={cartEmail.loading}
+          required={true}
           {...muiRegister('email', {
-            required: required.email,
+            required: true,
             pattern: { value: emailPattern, message: '' },
           })}
-          InputProps={{
-            autoComplete: 'email',
-            endAdornment: (
-              <WaitForQueries waitFor={isEmailAvailable}>
-                {isEmailAvailable.data?.isEmailAvailable && (
-                  <Button href='/account/signin' color='secondary' style={{ whiteSpace: 'nowrap' }}>
-                    <Trans id='Sign in' />
-                  </Button>
-                )}
-              </WaitForQueries>
-            ),
-          }}
+          // InputProps={{
+          //   autoComplete: 'email',
+          //   endAdornment: (
+          //     <WaitForQueries waitFor={isEmailAvailable}>
+          //       {isEmailAvailable.data?.isEmailAvailable && (
+          //         <Button href='/account/signin' color='secondary' style={{ whiteSpace: 'nowrap' }}>
+          //           <Trans id='Sign in' />
+          //         </Button>
+          //       )}
+          //     </WaitForQueries>
+          //   ),
+          // }}
         />
       </FormRow>
       <ApolloCartErrorAlert error={error} />

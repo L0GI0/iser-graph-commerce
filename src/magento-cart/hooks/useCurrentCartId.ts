@@ -3,6 +3,7 @@ import { OperationVariables, QueryHookOptions, useQuery } from '@graphcommerce/g
 import { startTransition, useState } from 'react'
 import { CurrentCartIdDocument, CurrentCartIdQuery } from './CurrentCartId.gql'
 import {} from 'react-dom'
+import useCart from '@vercel/shopify/src/cart/use-cart'
 
 type UseCurrentCartIdOptions<Q, V extends OperationVariables> = QueryHookOptions<
   Q & Pick<CurrentCartIdQuery, 'currentCartId'>,
@@ -22,13 +23,13 @@ export function useCurrentCartId<Q, V extends OperationVariables>(
 
   const skip = options.skip !== undefined ? options.skip : hydrating
 
-  // const { data, ...queryResults } = useQuery(CurrentCartIdDocument, { ...queryOptions, skip })
+  const { data, ...queryResults } = useCart()
 
-  // return {
-  //   currentCartId: data?.currentCartId?.id || '',
-  //   data,
-  //   ...queryResults,
-  // }
+  return {
+    currentCartId: data?.id|| '',
+    data,
+    ...queryResults,
+  }
 
   return {
     currentCardId: '',

@@ -54,7 +54,7 @@ export function CartStartCheckout(props: CartStartCheckoutProps) {
           onStart?.(e, cart)
           return onClick?.(e)
         }}
-        disabled={!hasTotals || hasErrors}
+        // disabled={!hasTotals || hasErrors}
         {...buttonProps}
       >
         <Box

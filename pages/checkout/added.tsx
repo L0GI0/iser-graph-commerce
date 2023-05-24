@@ -29,8 +29,8 @@ type Props = Record<string, unknown>
 type GetPageStaticProps = GetStaticProps<LayoutOverlayProps, Props>
 
 function CheckoutAdded() {
-  const cartAdded = useCartQuery(CartAddedDocument)
-  const items = filterNonNullableKeys(cartAdded.data?.cart?.items)
+  // const cartAdded = useCartQuery(CartAddedDocument)
+  // const items = filterNonNullableKeys(cartAdded.data?.cart?.items)
   const router = useRouter()
   const { sku } = router.query
   const lastItem = items.find((item) => item.product.sku === sku)

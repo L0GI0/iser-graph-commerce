@@ -43,13 +43,44 @@ function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
   return value !== null && value !== undefined
 }
 
+const defaultCarriers = [
+  {
+    "__typename": "AvailableShippingMethod",
+    "price_incl_tax": { "__typename": "Money", "currency": "USD", "value": 0 },
+    "price_excl_tax": { "__typename": "Money", "currency": "USD", "value": 0 },
+    "available": true,
+    "carrier_code": "instore",
+    "carrier_title": "International",
+    "error_message": "",
+    "method_code": "pickup",
+    "method_title": ""
+  },
+  {
+    "__typename": "AvailableShippingMethod",
+    "price_incl_tax": {
+      "__typename": "Money",
+      "currency": "USD",
+      "value": 5.65
+    },
+    "price_excl_tax": {
+      "__typename": "Money",
+      "currency": "USD",
+      "value": 5.65
+    },
+    "available": true,
+    "carrier_code": "flatrate",
+    "carrier_title": "DPD",
+    "error_message": "",
+    "method_code": "flatrate",
+    "method_title": "International"
+  }
+];
+
 export function ShippingMethodForm(props: ShippingMethodFormProps) {
   const { step, sx, children, onBeforeSubmit = (vars) => vars, ...options } = props
-  const { data: cartQuery, loading } = useCartQuery(GetShippingMethodsDocument)
-  const availableMethods = (
-    cartQuery?.cart?.shipping_addresses?.[0]?.available_shipping_methods ?? []
-  ).filter(notEmpty)
-  const selectedMethod = cartQuery?.cart?.shipping_addresses?.[0]?.selected_shipping_method
+  // const { data: cartQuery, loading } = useCartQuery(GetShippingMethodsDocument)
+  const availableMethods = defaultCarriers;
+  // const selectedMethod = cartQuery?.cart?.shipping_addresses?.[0]?.selected_shipping_method
 
   const items = useMemo(
     () =>
@@ -72,8 +103,8 @@ export function ShippingMethodForm(props: ShippingMethodFormProps) {
   let carrierMethod: string | undefined = items.length === 1 ? items[0]?.value : undefined
 
   // Override with the currently selected method if there is one.
-  if (selectedMethod?.method_code)
-    carrierMethod = `${selectedMethod.carrier_code}-${selectedMethod.method_code}`
+  // if (selectedMethod?.method_code)
+  //   carrierMethod = `${selectedMethod.carrier_code}-${selectedMethod.method_code}`
 
   const form = useFormGqlMutationCart<
     ShippingMethodFormMutation,
@@ -94,7 +125,7 @@ export function ShippingMethodForm(props: ShippingMethodFormProps) {
   useFormCompose({ form, step, submit, key: 'ShippingMethodForm' })
   useFormAutoSubmit({ form, submit, fields: ['carrierMethod'] })
 
-  if (loading || items.length === 0) return null
+  if (items.length === 0) return null
 
   return (
     <FormProvider {...form}>

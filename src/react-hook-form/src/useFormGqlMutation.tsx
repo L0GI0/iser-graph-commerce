@@ -41,7 +41,6 @@ export function useFormGqlMutation<Q extends Record<string, unknown>, V extends 
   // const valid = useFormValidFields(form, operation.required)
   // const valid = useFormValidFields(form, true)
 
-
   // return { ...form, ...operation, valid, muiRegister }
   return { ...form, muiRegister }
 }

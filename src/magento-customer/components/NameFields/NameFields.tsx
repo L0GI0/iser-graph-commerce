@@ -69,7 +69,8 @@ export function NameFields(props: NameFieldProps) {
         <TextFieldElement
           control={form.control}
           name='firstname'
-          required={required.firstname}
+          required={true}
+          // required={required.firstname}
           variant='outlined'
           type='text'
           label={<Trans id='First Name' />}
@@ -81,7 +82,8 @@ export function NameFields(props: NameFieldProps) {
         <TextFieldElement
           control={form.control}
           name='lastname'
-          required={required.lastname}
+          // required={required.lastname}
+          required={true}
           variant='outlined'
           type='text'
           label={<Trans id='Last Name' />}
